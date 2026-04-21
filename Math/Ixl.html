@@ -3,11 +3,11 @@
 <head>
     <base href="https://cdn.jsdelivr.net/gh/freebuisness/freebuisness.github.io@main/">
 
-    <link rel="icon" type="image/png" href="https://ssl.gstatic.com/images/branding/product/1x/drive_2020q4_32dp.png">
-    <link rel="shortcut icon" href="https://ssl.gstatic.com/images/branding/product/1x/drive_2020q4_32dp.png">
-    <link rel="apple-touch-icon" href="https://ssl.gstatic.com/images/branding/product/1x/drive_2020q4_32dp.png">
-    
-    <!-- User Requested Font -->
+    <link rel="icon" type="image/png" href="favicon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon.png">
+    <link rel="apple-touch-icon" href="favicon.png">
+
+    <!-- Sekuya Font -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Sekuya&display=swap" rel="stylesheet">
@@ -26,10 +26,21 @@
         gtag('js', new Date());
         gtag('config', 'G-WX5VS54ZDW');
     </script>
+    
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Drive - Google Drive</title>
-    
+    <meta name="title" content="GN-Math">
+    <meta name="description" content="Play unbl*cked games like Crazy Cattle 3D and DriveMad on GN-Math. Fast, free, no downloads—perfect for school or home.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://gn-math.github.io/">
+    <meta property="og:title" content="GN-Math">
+    <meta property="og:description" content="Play unbl*cked games like Crazy Cattle 3D and DriveMad on GN-Math. Fast, free, no downloads—perfect for school or home.">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:url" content="https://gn-math.github.io/">
+    <meta name="twitter:title" content="GN-Math">
+    <meta name="twitter:description" content="Play unbl*cked games like Crazy Cattle 3D and DriveMad on GN-Math. Fast, free, no downloads—perfect for school or home.">
+
     <style>
         .sekuya-regular {
             font-family: "Sekuya", system-ui;
@@ -38,7 +49,7 @@
         }
 
         :root {
-            /* Palette Variables */
+            /* Dark Mode Monochrome Palette */
             --primary: #d4d4d4;
             --primary-hover: #ffffff;
             --primary-light: rgba(212, 212, 212, 0.15);
@@ -87,7 +98,7 @@
         }
 
         .header-content {
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 0 auto;
             padding: 1rem;
             display: flex;
@@ -150,7 +161,7 @@
         }
 
         main {
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 0 auto;
             padding: 2rem 1rem;
             padding-bottom: 4rem;
@@ -158,7 +169,7 @@
 
         #container {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
             gap: 1.5rem;
         }
 
@@ -191,7 +202,7 @@
         .zone-item img {
             width: 100%;
             height: 100%;
-            object-fit: cover; /* Ensures image fills the square without distortion */
+            object-fit: cover; /* Ensures image fills the square perfectly */
             display: block;
             background: var(--border-light);
             transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
@@ -225,7 +236,7 @@
         .zone-overlay h3 {
             margin: 0 0 0.5rem 0;
             font-size: 1.1rem;
-            font-weight: bold;
+            font-family: "Sekuya", system-ui, sans-serif;
             color: #e5e5e5;
             transform: translateY(10px);
             transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
@@ -334,6 +345,7 @@
             display: flex;
             flex-direction: column;
             border: 1px solid var(--border);
+            font-family: "Sekuya", system-ui, sans-serif;
         }
 
         .popup-header {
@@ -348,7 +360,6 @@
         #popupTitle {
             margin: 0;
             font-size: 1.25rem;
-            font-weight: 700;
         }
 
         #popupClose {
@@ -393,6 +404,8 @@
             #container { grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); }
         }
     </style>
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#1a1a1a">
 </head>
 <body class="sekuya-regular dark-mode">
 
@@ -413,6 +426,7 @@
 
     <div id="zoneViewer">
         <span id="zoneId" style="display: none;"></span>
+        <!-- Removed aboutBlank button as requested -->
         <div class="floating-controls">
             <button onclick="downloadZone()" title="Download Game">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
@@ -473,6 +487,13 @@ const coverURL = "https://cdn.jsdelivr.net/gh/freebuisness/covers@main";
 const htmlURL = "https://cdn.jsdelivr.net/gh/freebuisness/html@main";
 let zones = [];
 let popularityData = {};
+
+function toTitleCase(str) {
+  return str.replace(
+    /\w\S*/g,
+    text => text.charAt(0).toUpperCase() + text.substring(1).toLowerCase()
+  );
+}
 
 async function listZones() {
     try {
@@ -567,6 +588,7 @@ async function listZones() {
         container.innerHTML = `Error loading zones: ${error}`;
     }
 }
+
 async function fetchPopularity(duration) {
     try {
         if (!popularityData[duration]) {
@@ -727,6 +749,222 @@ function downloadZone() {
     });
 }
 
+function fullscreenZone() {
+    if (zoneFrame.requestFullscreen) {
+        zoneFrame.requestFullscreen();
+    } else if (zoneFrame.mozRequestFullScreen) {
+        zoneFrame.mozRequestFullScreen();
+    } else if (zoneFrame.webkitRequestFullscreen) {
+        zoneFrame.webkitRequestFullscreen();
+    } else if (zoneFrame.msRequestFullscreen) {
+        zoneFrame.msRequestFullscreen();
+    }
+}
+
+function sanitizeData(obj, maxStringLen = 1000, maxArrayLen = 10000) {
+    if (typeof obj === 'string') {
+      return obj.length > maxStringLen ? obj.slice(0, maxStringLen) + '...[truncated]' : obj;
+    }
+    
+    if (obj instanceof Uint8Array) {
+      if (obj.length > maxArrayLen) {
+        return `[Uint8Array too large (${obj.length} bytes), truncated]`;
+      }
+      return obj;
+    }
+    
+    if (Array.isArray(obj)) {
+      return obj.map(item => sanitizeData(item, maxStringLen, maxArrayLen));
+    }
+    
+    if (obj && typeof obj === 'object') {
+      const newObj = {};
+      for (const key in obj) {
+        if (obj.hasOwnProperty(key)) {
+          newObj[key] = sanitizeData(obj[key], maxStringLen, maxArrayLen);
+        }
+      }
+      return newObj;
+    }
+    
+    return obj;
+  }
+
+async function saveData() {
+    alert("This might take a while, dont touch anything other than this OK button");
+    const result = {};
+    result.cookies = document.cookie;
+    result.localStorage = {...localStorage};
+    result.sessionStorage = {...sessionStorage};
+    result.indexedDB = {};
+    const dbs = await indexedDB.databases();
+    for (const dbInfo of dbs) {
+      if (!dbInfo.name) continue;
+      result.indexedDB[dbInfo.name] = {};
+      await new Promise((resolve, reject) => {
+        const openRequest = indexedDB.open(dbInfo.name, dbInfo.version);
+        openRequest.onerror = () => reject(openRequest.error);
+        openRequest.onsuccess = () => {
+          const db = openRequest.result;
+          const storeNames = Array.from(db.objectStoreNames);
+          if (storeNames.length === 0) {
+            resolve();
+            return;
+          }
+          const transaction = db.transaction(storeNames, "readonly");
+          const storePromises = [];
+          for (const storeName of storeNames) {
+            result.indexedDB[dbInfo.name][storeName] = [];
+            const store = transaction.objectStore(storeName);
+            const getAllRequest = store.getAll();
+            const p = new Promise((res, rej) => {
+              getAllRequest.onsuccess = () => {
+                result.indexedDB[dbInfo.name][storeName] = sanitizeData(getAllRequest.result, 1000, 100);
+                res();
+              };
+              getAllRequest.onerror = () => rej(getAllRequest.error);
+            });
+            storePromises.push(p);
+          }
+          Promise.all(storePromises).then(() => resolve());
+        };
+      });
+    }
+
+    result.caches = {};
+    const cacheNames = await caches.keys();
+    for (const cacheName of cacheNames) {
+      const cache = await caches.open(cacheName);
+      const requests = await cache.keys();
+      result.caches[cacheName] = [];
+      for (const req of requests) {
+        const response = await cache.match(req);
+        if (!response) continue;
+        const cloned = response.clone();
+        const contentType = cloned.headers.get('content-type') || '';
+        let body;
+        try {
+          if (contentType.includes('application/json')) {
+            body = await cloned.json();
+          } else if (contentType.includes('text') || contentType.includes('javascript')) {
+            body = await cloned.text();
+          } else {
+            const buffer = await cloned.arrayBuffer();
+            body = btoa(String.fromCharCode(...new Uint8Array(buffer)));
+          }
+        } catch (e) {
+          body = '[Unable to read body]';
+        }
+        result.caches[cacheName].push({
+          url: req.url,
+          body,
+          contentType
+        });
+      }
+    }
+  
+    alert("Done, wait for the download to come");
+    const link = document.createElement("a");
+    link.href = URL.createObjectURL(new Blob([JSON.stringify(result)], {
+        type: "application/octet-stream"
+    }));
+    link.download = `${Date.now()}.data`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+}
+  
+async function loadData(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = async function (e) {
+        const data = JSON.parse(e.target.result);
+        if (data.cookies) {
+            data.cookies.split(';').forEach(cookie => {
+              document.cookie = cookie.trim();
+            });
+          }
+        
+          if (data.localStorage) {
+            for (const key in data.localStorage) {
+              localStorage.setItem(key, data.localStorage[key]);
+            }
+          }
+        
+          if (data.sessionStorage) {
+            for (const key in data.sessionStorage) {
+              sessionStorage.setItem(key, data.sessionStorage[key]);
+            }
+          }
+        
+          if (data.indexedDB) {
+            for (const dbName in data.indexedDB) {
+              const stores = data.indexedDB[dbName];
+              await new Promise((resolve, reject) => {
+                const request = indexedDB.open(dbName, 1);
+                request.onupgradeneeded = e => {
+                  const db = e.target.result;
+                  for (const storeName in stores) {
+                    if (!db.objectStoreNames.contains(storeName)) {
+                      db.createObjectStore(storeName, { keyPath: 'id', autoIncrement: true });
+                    }
+                  }
+                };
+                request.onsuccess = e => {
+                  const db = e.target.result;
+                  const transaction = db.transaction(Object.keys(stores), 'readwrite');
+                  transaction.onerror = () => reject(transaction.error);
+                  let pendingStores = Object.keys(stores).length;
+        
+                  for (const storeName in stores) {
+                    const objectStore = transaction.objectStore(storeName);
+                    objectStore.clear().onsuccess = () => {
+                      for (const item of stores[storeName]) {
+                        objectStore.put(item);
+                      }
+                      pendingStores--;
+                      if (pendingStores === 0) resolve();
+                    };
+                  }
+                };
+                request.onerror = () => reject(request.error);
+              });
+            }
+          }
+        
+          if (data.caches) {
+            for (const cacheName in data.caches) {
+              const cache = await caches.open(cacheName);
+              await cache.keys().then(keys => Promise.all(keys.map(k => cache.delete(k)))); 
+        
+              for (const entry of data.caches[cacheName]) {
+                let responseBody;
+                if (entry.contentType.includes('application/json')) {
+                  responseBody = JSON.stringify(entry.body);
+                } else if (entry.contentType.includes('text') || entry.contentType.includes('javascript')) {
+                  responseBody = entry.body;
+                } else {
+                  const binaryStr = atob(entry.body);
+                  const len = binaryStr.length;
+                  const bytes = new Uint8Array(len);
+                  for (let i = 0; i < len; i++) {
+                    bytes[i] = binaryStr.charCodeAt(i);
+                  }
+                  responseBody = bytes.buffer;
+                }
+                const headers = new Headers({ 'content-type': entry.contentType });
+                const response = new Response(responseBody, { headers });
+                await cache.put(entry.url, response);
+              }
+            }
+          }
+        alert("Data loaded");
+    };
+    alert("This might take a while, dont touch anything other than this OK button");
+    reader.readAsText(file);
+}
+
 function showSettings() {
     document.getElementById('popupTitle').textContent = "Settings";
     const popupBody = document.getElementById('popupBody');
@@ -740,14 +978,125 @@ function showSettings() {
     document.getElementById('popupOverlay').style.display = "flex";
 }
 
+let _allStatsCache = null;
+
+async function getAllStats() {
+  if (_allStatsCache) {
+    return _allStatsCache;
+  }
+
+  const BASE_URL = "https://data.jsdelivr.com/v1/stats/packages/gh/freebuisness/html@main/files";
+  const PERIOD = "year";
+  const PAGE_BATCH = 5;
+
+  let page = 1;
+  let done = false;
+  const combinedMap = Object.create(null);
+
+  while (!done) {
+    const pages = Array.from({ length: PAGE_BATCH }, (_, i) => page + i);
+
+    const responses = await Promise.all(
+      pages.map(p =>
+        fetch(`${BASE_URL}?period=${PERIOD}&page=${p}&limit=100`)
+          .then(r => (r.ok ? r.json() : []))
+      )
+    );
+
+    for (const data of responses) {
+      if (!Array.isArray(data) || data.length === 0) {
+        done = true;
+        break;
+      }
+
+      for (const item of data) {
+        if (!item?.name) continue;
+
+        const match = item.name.match(/^\/(\d+)([.-])/);
+        if (!match) continue;
+
+        const id = match[1];
+
+        if (!combinedMap[id]) {
+          combinedMap[id] = {
+            hits: 0,
+            bandwidth: 0
+          };
+        }
+
+        combinedMap[id].hits += item.hits?.total ?? 0;
+        combinedMap[id].bandwidth += item.bandwidth?.total ?? 0;
+      }
+    }
+
+    page += PAGE_BATCH;
+  }
+
+  _allStatsCache = combinedMap;
+  return combinedMap;
+}
+
+async function getStats(id) {
+  id = String(id);
+  const allStats = await getAllStats();
+  return allStats[id]?.hits ?? 0;
+}
+
+function showZoneInfo() {
+    let id = Number(document.getElementById('zoneId').textContent);
+    document.getElementById('popupTitle').textContent = "Info";
+    const popupBody = document.getElementById('popupBody');
+    popupBody.innerHTML = `<p>Loading...</p>`
+    popupBody.contentEditable = false;
+    document.getElementById('popupOverlay').style.display = "flex";
+    fetch(`https://api.github.com/repos/freebuisness/html/commits?path=${id}.html`).then(res => res.json()).then(async json => {
+        let stats = await getStats (id);
+        idjson = zones.filter(a=>a.id===id)[0]
+        document.getElementById('popupTitle').textContent = `${idjson.name} Info`;
+        const date = new Date(json.at(-1).commit.author.date);
+        let formatteddate = new Intl.DateTimeFormat("en-US", {
+          month: "long",
+          day: "numeric",
+          year: "numeric",
+          hour: "numeric",
+          minute: "2-digit",
+          hour12: true
+        }).format(date);
+        popupBody.innerHTML = `
+        <p>
+        <b>Id</b>: ${id}<br>
+        <b>Name</b>: ${idjson.name}<br>
+        ${idjson.author?`<b>Game Author</b>: ${idjson.author}<br>`:""}
+        ${idjson.authorLink?`<b>Game Author Link</b>: <a style="color:var(--text);" href=${idjson.authorLink}>${idjson.authorLink}</a><br>`:""}
+        ${idjson.special?`<b>Tags</b>: ${idjson.special}<br>`:""}
+        <b>Gn-Math Adder</b>: ${json.at(-1).commit.author.name}<br>
+        <b>Date Added</b>: ${formatteddate}<br>
+        <b>Times Played (Globally)</b>: ${Number(stats).toLocaleString("en-US")}
+        </p>`;
+    })
+}
+
 function closePopup() {
     document.getElementById('popupOverlay').style.display = "none";
 }
+
 listZones();
 
 HTMLCanvasElement.prototype.toDataURL = function (...args) {
     return "";
 };
-</script>
+    </script>
+    <script>
+      try {
+        const search = new URLSearchParams(window.location.search)
+        const privacy = search.get('privacy')
+        if (privacy) {
+          loadPrivacy()
+        }
+      } catch (error) {}
+    </script>
+    <script>
+      navigator.serviceWorker.register(location.protocol + '//' + location.hostname + '/sw.js')
+    </script>
 </body>
 </html>
