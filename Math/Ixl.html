@@ -1,11 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <base href="https://cdn.jsdelivr.net/gh/freebuisness/freebuisness.github.io@main/">
+<head>
+    <base href="https://cdn.jsdelivr.net/gh/freebuisness/freebuisness.github.io@main/">
 
     <link rel="icon" type="image/png" href="https://ssl.gstatic.com/images/branding/product/1x/drive_2020q4_32dp.png">
     <link rel="shortcut icon" href="https://ssl.gstatic.com/images/branding/product/1x/drive_2020q4_32dp.png">
     <link rel="apple-touch-icon" href="https://ssl.gstatic.com/images/branding/product/1x/drive_2020q4_32dp.png">
+    
+    <!-- User Requested Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Sekuya&display=swap" rel="stylesheet">
+
     <script>
         window.addEventListener('beforeunload', function (event) {
             event.preventDefault();
@@ -16,72 +22,26 @@
     <script async="" src="https://www.googletagmanager.com/gtag/js?id=G-WX5VS54ZDW"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
-
-        function gtag() {
-            dataLayer.push(arguments);
-        }
+        function gtag() { dataLayer.push(arguments); }
         gtag('js', new Date());
         gtag('config', 'G-WX5VS54ZDW');
     </script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Drive - Google Drive</title>
-    <meta name="title" content="GN-Math">
-    <meta name="description" content="Play unbl*cked games like Crazy Cattle 3D and DriveMad on GN-Math. Fast, free, no downloads—perfect for school or home.">
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://gn-math.github.io/">
-    <meta property="og:title" content="GN-Math">
-    <meta property="og:description" content="Play unbl*cked games like Crazy Cattle 3D and DriveMad on GN-Math. Fast, free, no downloads—perfect for school or home.">
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:url" content="https://gn-math.github.io/">
-    <meta name="twitter:title" content="GN-Math">
-    <meta name="twitter:description" content="Play unbl*cked games like Crazy Cattle 3D and DriveMad on GN-Math. Fast, free, no downloads—perfect for school or home.">
+    
     <style>
-        :root {
-            /* Light Mode Monochrome Palette */
-            --primary: #404040;
-            --primary-hover: #1a1a1a;
-            --primary-light: rgba(64, 64, 64, 0.15);
-            --primary-lighter: rgba(64, 64, 64, 0.05);
-            --accent: #737373;
-            --accent-light: rgba(115, 115, 115, 0.1);
-            --success: #10b981;
-            --warning: #f59e0b;
-            --text: #111111;
-            --text-muted: #6b7280;
-            --text-light: #9ca3af;
-            --bg: #ffffff;
-            --bg-secondary: #f4f4f5;
-            --surface: #ffffff;
-            --surface-hover: #f4f4f5;
-            --border: #e5e5e5;
-            --border-light: #f4f4f5;
-            --glass: rgba(255, 255, 255, 0.8);
-            --shadow-xs: 0 1px 2px 0 rgb(0 0 0 / 0.05);
-            --shadow-sm: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
-            --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
-            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
-            --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
-            --shadow-glow: 0 0 20px rgba(64, 64, 64, 0.15);
-            --radius: 12px;
-            --radius-sm: 8px;
-            --radius-lg: 16px;
-            --radius-xl: 20px;
-            --gradient-primary: linear-gradient(135deg, #404040 0%, #1a1a1a 100%);
-            --gradient-accent: linear-gradient(135deg, #737373 0%, #404040 100%);
-            --gradient-surface: linear-gradient(135deg, #ffffff 0%, #f4f4f5 100%);
+        .sekuya-regular {
+            font-family: "Sekuya", system-ui;
+            font-weight: 400;
+            font-style: normal;
         }
 
-        .dark-mode {
-            /* Dark Mode Monochrome Palette */
+        :root {
+            /* Palette Variables */
             --primary: #d4d4d4;
             --primary-hover: #ffffff;
             --primary-light: rgba(212, 212, 212, 0.15);
-            --primary-lighter: rgba(212, 212, 212, 0.08);
-            --accent: #a3a3a3;
-            --accent-light: rgba(163, 163, 163, 0.15);
-            --success: #34d399;
-            --warning: #fbbf24;
             --text: #f5f5f5;
             --text-muted: #a3a3a3;
             --text-light: #737373;
@@ -92,14 +52,11 @@
             --border: #333333;
             --border-light: #404040;
             --glass: rgba(10, 10, 10, 0.8);
-            --shadow-xs: 0 1px 2px 0 rgb(0 0 0 / 0.4);
             --shadow-sm: 0 1px 3px 0 rgb(0 0 0 / 0.5), 0 1px 2px -1px rgb(0 0 0 / 0.5);
-            --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.5), 0 2px 4px -2px rgb(0 0 0 / 0.5);
-            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.6), 0 4px 6px -4px rgb(0 0 0 / 0.6);
             --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.7), 0 8px 10px -6px rgb(0 0 0 / 0.7);
-            --shadow-glow: 0 0 20px rgba(255, 255, 255, 0.05);
+            --radius: 12px;
+            --radius-lg: 16px;
             --gradient-primary: linear-gradient(135deg, #262626 0%, #0a0a0a 100%);
-            --gradient-accent: linear-gradient(135deg, #525252 0%, #262626 100%);
             --gradient-surface: linear-gradient(135deg, #1a1a1a 0%, #262626 100%);
         }
 
@@ -108,7 +65,7 @@
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', system-ui, sans-serif;
+            font-family: "Sekuya", system-ui, -apple-system, sans-serif;
             line-height: 1.6;
             margin: 0;
             padding: 0;
@@ -117,135 +74,86 @@
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             font-weight: 400;
             -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
         }
 
         header {
-            background: var(--bg); /* Blends perfectly with the page background */
+            background: rgba(10, 10, 10, 0.85); 
+            backdrop-filter: blur(12px);
             color: var(--text);
             position: sticky;
             top: 0;
             z-index: 100;
-            padding-bottom: 0.5rem;
+            border-bottom: 1px solid var(--border-light);
         }
 
         .header-content {
             max-width: 1200px;
             margin: 0 auto;
-            padding: 1.25rem 1rem;
+            padding: 1rem;
             display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 1.5rem;
-        }
-
-        .logo {
-            font-size: 1.75rem;
-            font-weight: 800;
-            letter-spacing: -0.02em;
-            background: linear-gradient(135deg, #ffffff 0%, rgba(255, 255, 255, 0.7) 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+            width: 100%;
         }
 
         .search-container {
             display: flex;
-            flex: 1;
+            flex-grow: 1;
             gap: 0.75rem;
+            width: 100%;
         }
 
         #searchBar {
-            flex: 1;
-            padding: 0.5rem 1rem;
+            flex-grow: 1;
+            padding: 0.75rem 1rem;
             border: 1px solid var(--border);
             border-radius: var(--radius);
-            background: transparent;
+            background: var(--surface);
             color: var(--text);
-            font-size: 15px;
+            font-family: "Sekuya", system-ui, sans-serif;
+            font-size: 1.1rem;
             outline: none;
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            height: 40px;
         }
 
         #searchBar:focus {
-            background: transparent;
-            border-color: var(--text-light);
-            box-shadow: 0 0 0 1px var(--text-light);
+            border-color: var(--primary);
+            box-shadow: 0 0 0 1px var(--primary);
             transform: translateY(-1px);
-            color: var(--text);
         }
 
         #searchBar::placeholder {
             color: var(--text-muted);
         }
 
-        #sortOptions {
-            padding: 0.875rem 1rem;
-            border: 0;
+        .header-icon-btn {
+            background: transparent;
+            border: 1px solid var(--border);
+            color: var(--text);
             border-radius: var(--radius);
-            background: var(--glass);
-            backdrop-filter: blur(20px);
-            color: var(--text-muted);
-            font-size: 15px;
+            width: 48px;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             cursor: pointer;
-            outline: none;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            min-width: 130px;
-            box-shadow: var(--shadow-sm);
+            transition: all 0.3s ease;
+            flex-shrink: 0;
         }
 
-        #sortOptions:hover {
-            background: var(--text);
-            transform: translateY(-1px);
-            box-shadow: var(--shadow);
-            color: var(--bg);
+        .header-icon-btn:hover {
+            background: var(--surface-hover);
+            transform: translateY(-2px);
         }
 
-        #filterOptions {
-            padding: 0.875rem 1rem;
-            border: 0;
-            border-radius: var(--radius);
-            background: var(--glass);
-            backdrop-filter: blur(20px);
-            color: var(--text-muted);
-            font-size: 15px;
-            cursor: pointer;
-            outline: none;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            min-width: 130px;
-            box-shadow: var(--shadow-sm);
-        }
-
-        #filterOptions:hover {
-            background: var(--text);
-            transform: translateY(-1px);
-            box-shadow: var(--shadow);
-            color: var(--bg);
+        .header-icon-btn svg {
+            width: 20px;
+            height: 20px;
         }
 
         main {
+            max-width: 1200px;
             margin: 0 auto;
-            padding: 1rem;
-            padding-bottom: 2rem;
-        }
-
-        #zoneCount {
-            margin: 0 0 1.5rem;
-            font-size: 14px;
-            color: var(--text-muted);
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        #zoneCount::before {
-            content: '';
-            width: 4px;
-            height: 4px;
-            border-radius: 50%;
-            background: var(--primary);
+            padding: 2rem 1rem;
+            padding-bottom: 4rem;
         }
 
         #container {
@@ -260,6 +168,7 @@
         }
 
         .zone-item {
+            position: relative;
             background: var(--gradient-surface);
             border: 1px solid var(--border);
             border-radius: var(--radius-lg);
@@ -268,7 +177,7 @@
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             display: flex;
             flex-direction: column;
-            position: relative;
+            aspect-ratio: 1; /* Makes the box a perfect square */
             box-shadow: var(--shadow-sm);
             animation: popIn 0.5s cubic-bezier(0.4, 0, 0.2, 1) backwards;
         }
@@ -279,32 +188,17 @@
             border-color: var(--primary);
         }
 
-        .zone-item:hover::before {
-            opacity: 1;
-        }
-
-        .zone-item::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: var(--primary-light);
-            opacity: 0;
-            transition: opacity 0.4s ease;
-            pointer-events: none;
-            z-index: 1;
-        }
-
         .zone-item img {
             width: 100%;
-            aspect-ratio: 1;
-            object-fit: cover;
+            height: 100%;
+            object-fit: cover; /* Ensures image fills the square without distortion */
             display: block;
             background: var(--border-light);
             transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .zone-item:hover img {
-            transform: scale(1.05);
+            transform: scale(1.08);
         }
 
         .zone-overlay {
@@ -359,7 +253,6 @@
             flex-direction: column;
             width: 100vw;
             height: 100vh;
-            animation: slideInUp 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         /* Bottom Middle Hidden Controls */
@@ -381,7 +274,6 @@
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        /* Invisible expanded hover buffer */
         .floating-controls::before {
             content: '';
             position: absolute;
@@ -418,6 +310,7 @@
             height: 20px;
         }
 
+        /* Popup Styling */
         #popupOverlay {
             position: fixed;
             inset: 0;
@@ -428,16 +321,6 @@
             justify-content: center;
             z-index: 2000;
             padding: 1rem;
-            animation: fadeIn 0.3s ease;
-        }
-
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-            }
-            to {
-                opacity: 1;
-            }
         }
 
         .popup {
@@ -451,18 +334,6 @@
             display: flex;
             flex-direction: column;
             border: 1px solid var(--border);
-            animation: slideInScale 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        @keyframes slideInScale {
-            from {
-                transform: scale(0.9) translateY(20px);
-                opacity: 0;
-            }
-            to {
-                transform: scale(1) translateY(0);
-                opacity: 1;
-            }
         }
 
         .popup-header {
@@ -488,20 +359,14 @@
             cursor: pointer;
             padding: 0.5rem;
             border-radius: var(--radius);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            line-height: 1;
             width: 36px;
             height: 36px;
             display: flex;
             align-items: center;
             justify-content: center;
-            backdrop-filter: blur(20px);
         }
 
-        #popupClose:hover {
-            background: rgba(255, 255, 255, 0.2);
-            transform: scale(1.1);
-        }
+        #popupClose:hover { background: rgba(255, 255, 255, 0.2); transform: scale(1.1); }
 
         #popupBody {
             padding: 1.5rem;
@@ -509,182 +374,48 @@
             color: var(--text);
         }
 
-        #popupBody input[type="text"],
-        #popupBody input[type="file"] {
-            width: 100%;
-            padding: 0.875rem 1rem;
-            margin-bottom: 1.25rem;
-            border: 1px solid var(--border);
-            border-radius: var(--radius);
-            background: var(--bg-secondary);
-            color: var(--text);
-            font-size: 15px;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            outline: none;
-        }
-
-        #popupBody input[type="text"]:focus,
-        #popupBody input[type="file"]:focus {
-            border-color: var(--primary);
-            box-shadow: 0 0 0 3px var(--primary-light);
-            transform: translateY(-1px);
-        }
-
-        @media (max-width: 768px) {
-            .header-content {
-                flex-direction: column;
-                gap: 1rem;
-                padding: 1rem;
-            }
-
-            .search-container {
-                width: 100%;
-            }
-
-            main {
-                padding: 1.5rem 1rem;
-            }
-
-            #container {
-                grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
-                gap: 1.25rem;
-            }
-
-            .zone-item button {
-                padding: 1rem 0.75rem;
-                min-height: 65px;
-                font-size: 13px;
-            }
-        }
-
-        @media (max-width: 480px) {
-            #container {
-                grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
-                gap: 1rem;
-            }
-
-            .popup {
-                margin: 0.5rem;
-            }
-
-            .zone-item:hover {
-                transform: translateY(-10px) scale(1.01);
-            }
-
-        }
-
         .settings-button {
             background: var(--gradient-primary);
             color: white;
             border: 0;
             padding: 0.875rem 1.5rem;
+            font-family: "Sekuya", system-ui, sans-serif;
             font-size: 15px;
-            font-weight: 600;
             border-radius: var(--radius);
             cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: var(--shadow-sm);
-            min-width: 200px;
+            transition: all 0.3s;
             width: 100%;
-            text-align: center;
         }
 
-        .settings-button:hover {
-            transform: translateY(-2px);
-            box-shadow: var(--shadow-lg);
-        }
+        .settings-button:hover { transform: translateY(-2px); }
 
-        .settings-button:active {
-            transform: translateY(0);
-            box-shadow: var(--shadow-sm);
-        }
-
-        .info-button {
-            background: none;
-            border: none;
-            cursor: pointer;
-            padding: 0;
-            margin-left: 10px;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            width: 24px;
-            height: 24px;
-            border-radius: 50%;
-            transition: background-color 0.2s, transform 0.2s;
-            color: inherit;
-            vertical-align: middle;
-        }
-
-        .info-button:hover {
-            background-color: rgba(255, 255, 255, 0.1);
-            transform: scale(1.1);
-        }
-
-        .info-button:active {
-            transform: scale(0.95);
-        }
-
-        .info-button svg {
-            display: block;
-        }
-
-        .header-icon-btn {
-            background: transparent;
-            border: 1px solid var(--border);
-            color: var(--text);
-            border-radius: var(--radius);
-            width: 40px;
-            height: 40px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            flex-shrink: 0;
-        }
-
-        .header-icon-btn:hover {
-            background: var(--surface-hover);
-            color: var(--text);
-            transform: translateY(-2px);
-        }
-
-        .header-icon-btn svg {
-            width: 20px;
-            height: 20px;
+        @media (max-width: 768px) {
+            #container { grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); }
         }
     </style>
-    <link rel="manifest" href="manifest.json">
-    <meta name="theme-color" content="#1a1a1a">
 </head>
-<body class="dark-mode">
+<body class="sekuya-regular dark-mode">
 
     <header>
         <div class="header-content">
-            <div class="search-container" style="width: 100%;">
+            <div class="search-container">
                 <input type="text" id="searchBar" placeholder="Search zones..." oninput="filterZones()">
-                <button onclick="tabCloak()" class="header-icon-btn" title="Cloak Tab">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
-                </button>
                 <button onclick="showSettings()" class="header-icon-btn" title="Settings">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1Z"/></svg>
                 </button>
             </div>
         </div>
     </header>
+
 	<main>
         <div id="container">Loading...</div>
     </main>
 
-     <div id="zoneViewer">
+    <div id="zoneViewer">
         <span id="zoneId" style="display: none;"></span>
         <div class="floating-controls">
             <button onclick="downloadZone()" title="Download Game">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-            </button>
-            <button onclick="aboutBlank()" title="Open in about:blank">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
             </button>
             <button onclick="reloadZone()" title="Reload Game">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
@@ -711,7 +442,7 @@
     <input type="file" id="importData" style="display: none;" onchange="loadData(event)">
 
     <script>
-// Force Google Drive Cloak
+// Force Google Drive Cloak continuously
 function enforceGoogleDriveDisguise() {
     if (document.title !== "My Drive - Google Drive") {
         document.title = "My Drive - Google Drive";
@@ -724,13 +455,13 @@ function enforceGoogleDriveDisguise() {
     });
 }
 enforceGoogleDriveDisguise();
-setInterval(enforceGoogleDriveDisguise, 1000); // Actively prevent other scripts from changing it back
+setInterval(enforceGoogleDriveDisguise, 1000); 
 
 const container = document.getElementById('container');
 const zoneViewer = document.getElementById('zoneViewer');
 let zoneFrame = document.getElementById('zoneFrame');
 const searchBar = document.getElementById('searchBar');
-// https://www.jsdelivr.com/tools/purge
+
 const zonesurls = [
     "https://cdn.jsdelivr.net/gh/freebuisness/assets@main/zones.json",
     "https://cdn.jsdelivr.net/gh/freebuisness/assets@latest/zones.json",
@@ -743,12 +474,6 @@ const htmlURL = "https://cdn.jsdelivr.net/gh/freebuisness/html@main";
 let zones = [];
 let popularityData = {};
 
-function toTitleCase(str) {
-  return str.replace(
-    /\w\S*/g,
-    text => text.charAt(0).toUpperCase() + text.substring(1).toLowerCase()
-  );
-}
 async function listZones() {
     try {
       let sharesponse;
@@ -867,7 +592,6 @@ async function fetchPopularity(duration) {
 }
 
 function sortZones() {
-    // Default sort by ID (Date)
     zones.sort((a, b) => a.id - b.id);
     zones.sort((a, b) => (a.id === -1 ? -1 : b.id === -1 ? 1 : 0));
     displayZones(zones);
@@ -880,6 +604,7 @@ function displayZones(zones) {
         zoneItem.className = "zone-item";
         zoneItem.style.animationDelay = `${(index % 30) * 0.05}s`;
         zoneItem.onclick = () => openZone(file);
+        
         const img = document.createElement("img");
         img.dataset.src = file.cover.replace("{COVER_URL}", coverURL).replace("{HTML_URL}", htmlURL);
         img.alt = file.name;
@@ -957,13 +682,13 @@ function openZone(file) {
             zoneFrame.contentDocument.write(html);
             zoneFrame.contentDocument.close();
             document.getElementById('zoneId').textContent = file.id;
-            zoneViewer.style.display = "block";
+            zoneViewer.style.display = "flex"; // Show viewer inside tab
             try {
                 const url = new URL(window.location);
                 url.searchParams.set('id', file.id);
                 history.pushState(null, '', url.toString());
             } catch(error){}
-            zoneViewer.hidden = true;
+            zoneViewer.hidden = false;
         }).catch(error => alert("Failed to load zone: " + error));
     }
 }
@@ -974,26 +699,14 @@ function reloadZone() {
     if (zone) openZone(zone);
 }
 
-function aboutBlank() {
-    const newWindow = window.open("about:blank", "_blank");
-    let zone = zones.find(zone => zone.id + '' === document.getElementById('zoneId').textContent).url.replace("{COVER_URL}", coverURL).replace("{HTML_URL}", htmlURL);
-    fetch(zone+"?t="+Date.now()).then(response => response.text()).then(html => {
-        if (newWindow) {
-            newWindow.document.open();
-            newWindow.document.write(html);
-            newWindow.document.close();
-        }
-    })
-}
-
 function closeZone() {
-    zoneViewer.hidden = false;
+    zoneViewer.hidden = true;
     zoneViewer.style.display = "none";
     zoneViewer.removeChild(zoneFrame);
     try {
-    const url = new URL(window.location);
-    url.searchParams.delete('id');
-    history.pushState(null, '', url.toString());
+        const url = new URL(window.location);
+        url.searchParams.delete('id');
+        history.pushState(null, '', url.toString());
     } catch(error){}
 }
 
@@ -1014,260 +727,6 @@ function downloadZone() {
     });
 }
 
-function fullscreenZone() {
-    if (zoneFrame.requestFullscreen) {
-        zoneFrame.requestFullscreen();
-    } else if (zoneFrame.mozRequestFullScreen) {
-        zoneFrame.mozRequestFullScreen();
-    } else if (zoneFrame.webkitRequestFullscreen) {
-        zoneFrame.webkitRequestFullscreen();
-    } else if (zoneFrame.msRequestFullscreen) {
-        zoneFrame.msRequestFullscreen();
-    }
-}
-
-function sanitizeData(obj, maxStringLen = 1000, maxArrayLen = 10000) {
-    if (typeof obj === 'string') {
-      return obj.length > maxStringLen ? obj.slice(0, maxStringLen) + '...[truncated]' : obj;
-    }
-    
-    if (obj instanceof Uint8Array) {
-      if (obj.length > maxArrayLen) {
-        return `[Uint8Array too large (${obj.length} bytes), truncated]`;
-      }
-      return obj;
-    }
-    
-    if (Array.isArray(obj)) {
-      return obj.map(item => sanitizeData(item, maxStringLen, maxArrayLen));
-    }
-    
-    if (obj && typeof obj === 'object') {
-      const newObj = {};
-      for (const key in obj) {
-        if (obj.hasOwnProperty(key)) {
-          newObj[key] = sanitizeData(obj[key], maxStringLen, maxArrayLen);
-        }
-      }
-      return newObj;
-    }
-    
-    return obj;
-  }
-
-async function saveData() {
-    alert("This might take a while, dont touch anything other than this OK button");
-    const result = {};
-    result.cookies = document.cookie;
-    result.localStorage = {...localStorage};
-    result.sessionStorage = {...sessionStorage};
-    result.indexedDB = {};
-    const dbs = await indexedDB.databases();
-    for (const dbInfo of dbs) {
-      if (!dbInfo.name) continue;
-      result.indexedDB[dbInfo.name] = {};
-      await new Promise((resolve, reject) => {
-        const openRequest = indexedDB.open(dbInfo.name, dbInfo.version);
-        openRequest.onerror = () => reject(openRequest.error);
-        openRequest.onsuccess = () => {
-          const db = openRequest.result;
-          const storeNames = Array.from(db.objectStoreNames);
-          if (storeNames.length === 0) {
-            resolve();
-            return;
-          }
-          const transaction = db.transaction(storeNames, "readonly");
-          const storePromises = [];
-          for (const storeName of storeNames) {
-            result.indexedDB[dbInfo.name][storeName] = [];
-            const store = transaction.objectStore(storeName);
-            const getAllRequest = store.getAll();
-            const p = new Promise((res, rej) => {
-              getAllRequest.onsuccess = () => {
-                result.indexedDB[dbInfo.name][storeName] = sanitizeData(getAllRequest.result, 1000, 100);
-                res();
-              };
-              getAllRequest.onerror = () => rej(getAllRequest.error);
-            });
-            storePromises.push(p);
-          }
-          Promise.all(storePromises).then(() => resolve());
-        };
-      });
-    }
-
-    result.caches = {};
-    const cacheNames = await caches.keys();
-    for (const cacheName of cacheNames) {
-      const cache = await caches.open(cacheName);
-      const requests = await cache.keys();
-      result.caches[cacheName] = [];
-      for (const req of requests) {
-        const response = await cache.match(req);
-        if (!response) continue;
-        const cloned = response.clone();
-        const contentType = cloned.headers.get('content-type') || '';
-        let body;
-        try {
-          if (contentType.includes('application/json')) {
-            body = await cloned.json();
-          } else if (contentType.includes('text') || contentType.includes('javascript')) {
-            body = await cloned.text();
-          } else {
-            const buffer = await cloned.arrayBuffer();
-            body = btoa(String.fromCharCode(...new Uint8Array(buffer)));
-          }
-        } catch (e) {
-          body = '[Unable to read body]';
-        }
-        result.caches[cacheName].push({
-          url: req.url,
-          body,
-          contentType
-        });
-      }
-    }
-  
-    alert("Done, wait for the download to come");
-    const link = document.createElement("a");
-    link.href = URL.createObjectURL(new Blob([JSON.stringify(result)], {
-        type: "application/octet-stream"
-    }));
-    link.download = `${Date.now()}.data`;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-  }
-  
-  async function loadData(event) {
-    const file = event.target.files[0];
-    if (!file) return;
-    const reader = new FileReader();
-    reader.onload = async function (e) {
-        const data = JSON.parse(e.target.result);
-        if (data.cookies) {
-            data.cookies.split(';').forEach(cookie => {
-              document.cookie = cookie.trim();
-            });
-          }
-        
-          if (data.localStorage) {
-            for (const key in data.localStorage) {
-              localStorage.setItem(key, data.localStorage[key]);
-            }
-          }
-        
-          if (data.sessionStorage) {
-            for (const key in data.sessionStorage) {
-              sessionStorage.setItem(key, data.sessionStorage[key]);
-            }
-          }
-        
-          if (data.indexedDB) {
-            for (const dbName in data.indexedDB) {
-              const stores = data.indexedDB[dbName];
-              await new Promise((resolve, reject) => {
-                const request = indexedDB.open(dbName, 1);
-                request.onupgradeneeded = e => {
-                  const db = e.target.result;
-                  for (const storeName in stores) {
-                    if (!db.objectStoreNames.contains(storeName)) {
-                      db.createObjectStore(storeName, { keyPath: 'id', autoIncrement: true });
-                    }
-                  }
-                };
-                request.onsuccess = e => {
-                  const db = e.target.result;
-                  const transaction = db.transaction(Object.keys(stores), 'readwrite');
-                  transaction.onerror = () => reject(transaction.error);
-                  let pendingStores = Object.keys(stores).length;
-        
-                  for (const storeName in stores) {
-                    const objectStore = transaction.objectStore(storeName);
-                    objectStore.clear().onsuccess = () => {
-                      for (const item of stores[storeName]) {
-                        objectStore.put(item);
-                      }
-                      pendingStores--;
-                      if (pendingStores === 0) resolve();
-                    };
-                  }
-                };
-                request.onerror = () => reject(request.error);
-              });
-            }
-          }
-        
-          if (data.caches) {
-            for (const cacheName in data.caches) {
-              const cache = await caches.open(cacheName);
-              await cache.keys().then(keys => Promise.all(keys.map(k => cache.delete(k)))); // clear existing
-        
-              for (const entry of data.caches[cacheName]) {
-                let responseBody;
-                if (entry.contentType.includes('application/json')) {
-                  responseBody = JSON.stringify(entry.body);
-                } else if (entry.contentType.includes('text') || entry.contentType.includes('javascript')) {
-                  responseBody = entry.body;
-                } else {
-                  const binaryStr = atob(entry.body);
-                  const len = binaryStr.length;
-                  const bytes = new Uint8Array(len);
-                  for (let i = 0; i < len; i++) {
-                    bytes[i] = binaryStr.charCodeAt(i);
-                  }
-                  responseBody = bytes.buffer;
-                }
-                const headers = new Headers({ 'content-type': entry.contentType });
-                const response = new Response(responseBody, { headers });
-                await cache.put(entry.url, response);
-              }
-            }
-          }
-        alert("Data loaded");
-    };
-    alert("This might take a while, dont touch anything other than this OK button");
-    reader.readAsText(file);
-  }
-
-function darkMode() {
-    document.body.classList.toggle("dark-mode");
-}
-
-function cloakIcon(url) {
-    const link = document.querySelector("link[rel~='icon']");
-    link.rel = "icon";
-    if ((url+"").trim().length === 0) {
-        link.href = "https://ssl.gstatic.com/images/branding/product/1x/drive_2020q4_32dp.png";
-    } else {
-        link.href = url;
-    }
-    document.head.appendChild(link);
-}
-function cloakName(string) {
-    if ((string+"").trim().length === 0) {
-        document.title = "My Drive - Google Drive";
-        return;
-    }
-    document.title = string;
-}
-
-function tabCloak() {
-    closePopup();
-    document.getElementById('popupTitle').textContent = "Tab Cloak";
-    const popupBody = document.getElementById('popupBody');
-    popupBody.innerHTML = `
-        <label for="tab-cloak-textbox" style="font-weight: bold;">Set Tab Title:</label><br>
-        <input type="text" id="tab-cloak-textbox" placeholder="Enter new tab name..." oninput="cloakName(this.value)">
-        <br><br><br><br>
-        <label for="tab-cloak-textbox" style="font-weight: bold;">Set Tab Icon:</label><br>
-        <input type="text" id="tab-cloak-textbox" placeholder="Enter new tab icon..." oninput='cloakIcon(this.value)'>
-        <br><br><br>
-    `;
-    popupBody.contentEditable = false;
-    document.getElementById('popupOverlay').style.display = "flex";
-}
-
 function showSettings() {
     document.getElementById('popupTitle').textContent = "Settings";
     const popupBody = document.getElementById('popupBody');
@@ -1281,106 +740,6 @@ function showSettings() {
     document.getElementById('popupOverlay').style.display = "flex";
 }
 
-let _allStatsCache = null;
-
-async function getAllStats() {
-  if (_allStatsCache) {
-    return _allStatsCache;
-  }
-
-  const BASE_URL =
-    "https://data.jsdelivr.com/v1/stats/packages/gh/freebuisness/html@main/files";
-  const PERIOD = "year";
-  const PAGE_BATCH = 5;
-
-  let page = 1;
-  let done = false;
-  const combinedMap = Object.create(null);
-
-  while (!done) {
-    const pages = Array.from({ length: PAGE_BATCH }, (_, i) => page + i);
-
-    const responses = await Promise.all(
-      pages.map(p =>
-        fetch(`${BASE_URL}?period=${PERIOD}&page=${p}&limit=100`)
-          .then(r => (r.ok ? r.json() : []))
-      )
-    );
-
-    for (const data of responses) {
-      if (!Array.isArray(data) || data.length === 0) {
-        done = true;
-        break;
-      }
-
-      for (const item of data) {
-        if (!item?.name) continue;
-
-        const match = item.name.match(/^\/(\d+)([.-])/);
-        if (!match) continue;
-
-        const id = match[1];
-
-        if (!combinedMap[id]) {
-          combinedMap[id] = {
-            hits: 0,
-            bandwidth: 0
-          };
-        }
-
-        combinedMap[id].hits += item.hits?.total ?? 0;
-        combinedMap[id].bandwidth += item.bandwidth?.total ?? 0;
-      }
-    }
-
-    page += PAGE_BATCH;
-  }
-
-  _allStatsCache = combinedMap;
-  return combinedMap;
-}
-
-async function getStats(id) {
-  id = String(id);
-  const allStats = await getAllStats();
-
-  return allStats[id]?.hits ?? 0;
-}
-
-function showZoneInfo() {
-    let id = Number(document.getElementById('zoneId').textContent);
-    document.getElementById('popupTitle').textContent = "Info";
-    const popupBody = document.getElementById('popupBody');
-    popupBody.innerHTML = `<p>Loading...</p>`
-    popupBody.contentEditable = false;
-    document.getElementById('popupOverlay').style.display = "flex";
-    fetch(`https://api.github.com/repos/freebuisness/html/commits?path=${id}.html`).then(res => res.json()).then(async json => {
-        let stats = await getStats (id);
-        idjson = zones.filter(a=>a.id===id)[0]
-        document.getElementById('popupTitle').textContent = `${idjson.name} Info`;
-        const date = new Date(json.at(-1).commit.author.date);
-        let formatteddate = new Intl.DateTimeFormat("en-US", {
-  month: "long",
-  day: "numeric",
-  year: "numeric",
-  hour: "numeric",
-  minute: "2-digit",
-  hour12: true
-}).format(date);
-        popupBody.innerHTML = `
-        <p>
-        <b>Id</b>: ${id}<br>
-        <b>Name</b>: ${idjson.name}<br>
-        ${idjson.author?`<b>Game Author</b>: ${idjson.author}<br>`:""}
-        ${idjson.authorLink?`<b>Game Author Link</b>: <a style="color:var(--text);" href=${idjson.authorLink}>${idjson.authorLink}</a><br>`:""}
-        ${idjson.special?`<b>Tags</b>: ${idjson.special}<br>`:""}
-        <b>Gn-Math Adder</b>: ${json.at(-1).commit.author.name}<br>
-        <b>Date Added</b>: ${formatteddate}<br>
-        <b>Times Played (Globally)</b>: ${Number(stats).toLocaleString("en-US")}
-        </p>`;
-    })
-}
-
 function closePopup() {
     document.getElementById('popupOverlay').style.display = "none";
 }
@@ -1390,17 +749,5 @@ HTMLCanvasElement.prototype.toDataURL = function (...args) {
     return "";
 };
 </script>
-    <script>
-      try {
-        const search = new URLSearchParams(window.location.search)
-        const privacy = search.get('privacy')
-        if (privacy) {
-          loadPrivacy()
-        }
-      } catch (error) {}
-    </script>
-    <script>
-      navigator.serviceWorker.register(location.protocol + '//' + location.hostname + '/sw.js')
-    </script>
 </body>
 </html>
