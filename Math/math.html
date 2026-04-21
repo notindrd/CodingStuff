@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UGS Files</title>
+    
+    <!-- Try to load Sekuya from Google Fonts, with Outfit/Syne as gaming fallbacks -->
+    <link href="https://fonts.googleapis.com/css2?family=Sekuya&family=Outfit:wght@400;600;800&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            /* Dark Mode Monochrome Palette */
+            --primary: #d4d4d4;
+            --primary-hover: #ffffff;
+            --primary-light: rgba(212, 212, 212, 0.15);
+            --text: #f5f5f5;
+            --text-muted: #a3a3a3;
+            --text-light: #737373;
+            --bg: #0a0a0a;
+            --surface: #1a1a1a;
+            --surface-hover: #262626;
+            --border: #333333;
+            --border-light: #404040;
+            --glass: rgba(10, 10, 10, 0.8);
+            --shadow-sm: 0 1px 3px 0 rgb(0 0 0 / 0.5), 0 1px 2px -1px rgb(0 0 0 / 0.5);
+            --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.7), 0 8px 10px -6px rgb(0 0 0 / 0.7);
+            --radius: 12px;
+            --radius-lg: 16px;
+            --gradient-primary: linear-gradient(135deg, #262626 0%, #0a0a0a 100%);
+            --gradient-surface: linear-gradient(135deg, #1a1a1a 0%, #262626 100%);
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            /* Apply requested font */
+            font-family: 'Sekuya', 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            background: var(--bg);
+            color: var(--text);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            font-weight: 600;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            min-height: 100vh;
+            display: flex;
+        }
+
+        .main-content {
+            flex: 1;
+            /* Moved up by reducing top padding */
+            padding: 1rem 1.5rem 3rem 1.5rem; 
+            width: 100%;
+            max-width: 100%; /* Allow full width to match search bar */
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* Search Bar Styling - Flex Grow Horizontally */
+        .search-container {
+            width: 100%;
+            max-width: 100%; /* Flex grow horizontally to fit screens */
+            margin-bottom: 2rem;
+            position: sticky;
+            top: 10px;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+            width: 24px;
+            height: 24px;
+            pointer-events: none;
+            z-index: 2;
+        }
+
+        #searchInput {
+            width: 100%;
+            flex-grow: 1; /* Ensures it stretches entirely */
+            padding: 1rem 1rem 1rem 3.5rem; /* Taller padding */
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            background: var(--glass);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            color: var(--text);
+            font-size: 18px; /* Bigger font for search */
+            font-family: inherit;
+            outline: none;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: var(--shadow-sm);
+        }
+
+        #searchInput::placeholder {
+            color: var(--text-muted);
+        }
+
+        #searchInput:focus {
+            background: var(--bg);
+            border-color: var(--primary);
+            box-shadow: 0 0 0 1px var(--primary);
+        }
+
+        /* Aggressively Hide Cloak Button Injected by External Scripts */
+        #cloak, 
+        .cloak, 
+        .cloak-btn, 
+        [id*="cloak"], 
+        [class*="cloak"],
+        .search-container button {
+            display: none !important;
+        }
+
+        /* Grid Layout */
+        #sections-container {
+            display: grid;
+            /* Adjusted minmax slightly to ensure nice squares on all devices */
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 1.5rem;
+            width: 100%;
+            align-items: stretch;
+        }
+
+        .letter-section, .buttons-container {
+            display: contents;
+        }
+
+        .letter-header, .empty-message {
+            display: none !important; 
+        }
+
+        /* Button Animations */
+        @keyframes popIn {
+            0% { opacity: 0; transform: scale(0.9) translateY(20px); }
+            100% { opacity: 1; transform: scale(1) translateY(0); }
+        }
+
+        /* Square Game Button Styling */
+        input[type="button"] {
+            background: var(--gradient-surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 1.25rem;
+            
+            /* Typography Changes: Bigger text & spaced words */
+            font-family: inherit;
+            font-size: 22px; 
+            word-spacing: 0.4em; /* Spacing for each individual word */
+            letter-spacing: 0.05em; /* Slight letter spacing for readability */
+            font-weight: 800;
+            line-height: 1.3;
+            
+            color: var(--text);
+            cursor: pointer;
+            box-shadow: var(--shadow-sm);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            width: 100%;
+            
+            /* Make it a Square */
+            aspect-ratio: 1 / 1;
+            height: auto;
+            min-height: unset;
+            
+            text-align: center;
+            white-space: normal;
+            word-wrap: break-word;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        input[type="button"]::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: var(--primary-light);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        input[type="button"]:not(.hidden-btn) {
+            animation: popIn 0.5s cubic-bezier(0.4, 0, 0.2, 1) backwards;
+        }
+
+        input[type="button"]:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: var(--shadow-xl);
+            border-color: var(--primary);
+        }
+
+        input[type="button"]:hover::before {
+            opacity: 1;
+        }
+
+        input[type="button"]:active {
+            transform: translateY(0);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .hidden-btn {
+            display: none !important;
+        }
+
+        /* Load More Button Styling */
+        #loadMoreBtn {
+            background: var(--gradient-primary);
+            color: var(--bg);
+            border: 0;
+            padding: 1rem 2.5rem;
+            font-family: inherit;
+            font-size: 18px;
+            font-weight: 800;
+            letter-spacing: 0.05em;
+            border-radius: var(--radius);
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: var(--shadow-sm);
+            margin: 3rem auto 1rem;
+            display: block;
+            min-width: 250px;
+        }
+
+        #loadMoreBtn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-xl);
+        }
+
+        /* In-code Game Viewer Overlay */
+        #gameOverlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: var(--bg);
+            z-index: 99999;
+            display: none;
+            flex-direction: column;
+        }
+
+        .overlay-header {
+            padding: 10px 20px;
+            background: var(--surface);
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .overlay-title {
+            font-size: 18px;
+            color: var(--text);
+            letter-spacing: 0.1em;
+        }
+
+        #closeOverlayBtn {
+            background: #ef4444;
+            color: white;
+            border: none;
+            padding: 8px 20px;
+            border-radius: var(--radius);
+            font-family: inherit;
+            font-weight: 800;
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+
+        #closeOverlayBtn:hover {
+            opacity: 0.8;
+        }
+
+        #gameIframe {
+            flex-grow: 1;
+            width: 100%;
+            height: 100%;
+            border: none;
+            background: #ffffff; /* Keep white incase game has transparent background */
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .main-content { padding: 1rem; }
+            #sections-container { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 1rem; }
+            input[type="button"] { font-size: 16px; padding: 1rem; }
+        }
+    </style>
+</head>
+<body class="dark-mode">
+
+    <!-- Hidden sidebar to prevent external script errors -->
+    <div id="sidebar" style="display: none;"></div>
+
+    <div class="main-content">
+        <div class="search-container">
+            <svg class="search-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+            </svg>
+            <input type="text" placeholder="Search for games, apps, or files..." id="searchInput" autocomplete="off">
+        </div>
+
+        <div id="sections-container">  
+            <!-- Buttons dynamically injected here -->
+        </div>
+
+        <button id="loadMoreBtn" style="display: none;">Load More</button>
+    </div>
+
+    <!-- Game Viewer Overlay Elements -->
+    <div id="gameOverlay">
+        <div class="overlay-header">
+            <div class="overlay-title">GAME VIEWER</div>
+            <button id="closeOverlayBtn">Exit Game</button>
+        </div>
+        <iframe id="gameIframe" src=""></iframe>
+    </div>
+
+    <!-- Intercept Window.Open to route games into the iframe instead of about:blank -->
+    <script>
+        const gameOverlay = document.getElementById('gameOverlay');
+        const gameIframe = document.getElementById('gameIframe');
+        const closeOverlayBtn = document.getElementById('closeOverlayBtn');
+
+        // Close game viewer
+        closeOverlayBtn.addEventListener('click', () => {
+            gameOverlay.style.display = 'none';
+            gameIframe.src = 'about:blank'; // Clears the game/audio
+        });
+
+        // Intercept all window.open calls made by external scripts
+        window.originalWindowOpen = window.open;
+        window.open = function(url, name, specs) {
+            gameOverlay.style.display = 'flex'; // Show overlay
+            
+            if (url && url !== 'about:blank') {
+                // If it's a direct URL, load it in the iframe
+                gameIframe.src = url;
+                return gameIframe.contentWindow;
+            } else {
+                // If the script opens about:blank to document.write to it later (cloak mechanism)
+                // We point our iframe to about:blank and return its window object.
+                gameIframe.src = 'about:blank';
+                return gameIframe.contentWindow; 
+            }
+        };
+    </script>
+
+    <!-- External Scripts -->
+    <script src="https://cdn.jsdelivr.net/gh/bubbls/ugs-singlefile@main/searchbut.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/bubbls/ugs-singlefile@main/game.js"></script>
+
+    <!-- Custom Logic -->
+    <script>
+        const searchInput = document.getElementById('searchInput');
+        const loadMoreBtn = document.getElementById('loadMoreBtn');
+        const container = document.getElementById('sections-container');
+        
+        let currentLimit = 30;
+        let processedButtons = [];
+
+        // Main function to calculate what should be visible
+        function updatePagination() {
+            const isSearching = searchInput.value.trim().length > 0;
+
+            if (isSearching) {
+                loadMoreBtn.style.display = 'none';
+                processedButtons.forEach(btn => btn.classList.remove('hidden-btn'));
+                return;
+            }
+
+            let visibleCount = 0;
+            processedButtons.forEach((btn, index) => {
+                btn.style.display = '';
+
+                if (index < currentLimit) {
+                    btn.classList.remove('hidden-btn');
+                    const animDelay = (index % 30) * 0.05;
+                    btn.style.animationDelay = `${animDelay}s`;
+                    visibleCount++;
+                } else {
+                    btn.classList.add('hidden-btn');
+                    btn.style.animationDelay = `0s`;
+                }
+            });
+
+            if (processedButtons.length > currentLimit) {
+                loadMoreBtn.style.display = 'block';
+            } else {
+                loadMoreBtn.style.display = 'none';
+            }
+        }
+
+        // Processes new buttons: absolutely enforces the removal of the 'cl' prefix
+        function processButton(btn) {
+            const cleanValue = btn.value.replace(/^cl\s*/i, '').trim();
+            if (btn.value !== cleanValue) {
+                btn.value = cleanValue;
+            }
+
+            if (btn.dataset.processed) return;
+            
+            btn.dataset.processed = "true";
+            processedButtons.push(btn);
+        }
+
+        // Observer to detect newly added buttons efficiently
+        const observer = new MutationObserver((mutations) => {
+            let newlyAdded = false;
+
+            mutations.forEach((mutation) => {
+                mutation.addedNodes.forEach((node) => {
+                    if (node.nodeType === 1) { 
+                        if (node.tagName === 'INPUT' && node.type === 'button') {
+                            processButton(node);
+                            newlyAdded = true;
+                        } else {
+                            const buttons = node.querySelectorAll('input[type="button"]');
+                            if (buttons.length > 0) {
+                                buttons.forEach(processButton);
+                                newlyAdded = true;
+                            }
+                        }
+                    }
+                });
+            });
+
+            if (newlyAdded) {
+                updatePagination();
+            }
+        });
+
+        if (container) {
+            observer.observe(container, { childList: true, subtree: true });
+        }
+
+        // Handle "Load More" Click
+        loadMoreBtn.addEventListener('click', () => {
+            currentLimit += 30;
+            updatePagination();
+        });
+
+        // Bridge external search script with our internal pagination
+        searchInput.addEventListener('input', () => {
+            setTimeout(updatePagination, 50);
+        });
+
+        // Fallback: Check existing buttons immediately on load
+        window.addEventListener('DOMContentLoaded', () => {
+            const existingButtons = container.querySelectorAll('input[type="button"]');
+            existingButtons.forEach(processButton);
+            if (existingButtons.length > 0) updatePagination();
+        });
+    </script>
+</body> 
+</html>
