@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StreamView | Discover & Watch</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: '#ffffff',
+                        accent: '#3b82f6',
+                        dark: '#0f1115',
+                        darker: '#07080a',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
+        
+        body { font-family: 'Inter', sans-serif; }
+        
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #07080a; }
+        ::-webkit-scrollbar-thumb { background: #222; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: #444; }
+
+        .glass {
+            background: rgba(15, 17, 21, 0.7);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .movie-card:hover .overlay { opacity: 1; }
+        .movie-card:hover img { transform: scale(1.08); }
+        
+        .episode-pill.active {
+            background-color: white;
+            color: black;
+            border-color: white;
+        }
+
+        input[type="search"]::-webkit-search-decoration,
+        input[type="search"]::-webkit-search-cancel-button,
+        input[type="search"]::-webkit-search-results-button,
+        input[type="search"]::-webkit-search-results-decoration { display: none; }
+
+        .custom-shadow {
+            box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+        }
+
+        /* Smooth transitions */
+        .fade-in {
+            animation: fadeIn 0.4s ease-out forwards;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Custom Dropdown Styling to override default browser look */
+        select option {
+            background-color: #0f1115;
+            color: white;
+            padding: 10px;
+        }
+    </style>
+</head>
+<body class="bg-darker text-white min-h-screen">
+
+    <!-- Header Navigation -->
+    <nav class="fixed top-0 w-full z-50 px-6 py-4 transition-all duration-300" id="navbar">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center gap-4">
+            <!-- Search & Filter Container -->
+            <div class="flex flex-1 items-center gap-3 w-full max-w-3xl mx-auto">
+                <!-- Search Bar -->
+                <div class="relative flex-1 group">
+                    <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                        <i class="ph ph-magnifying-glass text-gray-400 text-xl group-focus-within:text-white transition-colors"></i>
+                    </div>
+                    <input type="search" id="searchInput" 
+                        class="block w-full pl-12 pr-12 py-3 bg-white/5 border border-white/10 rounded-2xl leading-5 text-white placeholder-gray-500 focus:outline-none focus:bg-white/10 focus:ring-2 focus:ring-white/20 focus:border-transparent transition-all sm:text-sm glass" 
+                        placeholder="Search titles...">
+                    <div class="absolute inset-y-0 right-0 pr-4 flex items-center pointer-events-none">
+                        <i class="ph ph-magnifying-glass text-gray-500 text-sm"></i>
+                    </div>
+                </div>
+
+                <!-- Category Filter -->
+                <div class="relative min-w-[140px]">
+                    <div class="absolute inset-y-0 left-3 flex items-center pointer-events-none">
+                        <i class="ph ph-funnel text-gray-400 text-lg"></i>
+                    </div>
+                    <select id="typeFilter" 
+                        class="appearance-none w-full bg-white/5 border border-white/10 text-white text-sm rounded-2xl focus:ring-2 focus:ring-white/20 focus:border-transparent block pl-10 pr-10 py-3 glass cursor-pointer outline-none transition-all hover:bg-white/10">
+                        <option value="all">All Content</option>
+                        <option value="movie">Movies</option>
+                        <option value="tv">TV Shows</option>
+                    </select>
+                    <div class="absolute inset-y-0 right-0 flex items-center px-3 pointer-events-none">
+                        <i class="ph ph-caret-down text-gray-400"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="pt-32 pb-20 px-6 max-w-7xl mx-auto">
+        
+        <!-- Results Section Title -->
+        <div id="contentHeader" class="flex items-center justify-between mb-8">
+            <div class="flex items-center gap-3">
+                <div class="h-8 w-1 bg-white rounded-full"></div>
+                <h2 id="sectionTitle" class="text-2xl font-bold tracking-tight text-white">Trending Now</h2>
+            </div>
+            <div id="pageIndicator" class="text-xs font-bold text-gray-500 uppercase tracking-widest">
+                Page <span id="pageNum">1</span>
+            </div>
+        </div>
+
+        <!-- Grid -->
+        <div id="mainGrid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-6 min-h-[400px]">
+            <!-- Items injected here -->
+        </div>
+
+        <!-- Pagination Controls -->
+        <div class="mt-16 flex items-center justify-center gap-4">
+            <button id="prevBtn" class="flex items-center justify-center w-12 h-12 bg-white/5 border border-white/10 rounded-xl hover:bg-white hover:text-black disabled:opacity-30 disabled:hover:bg-white/5 disabled:hover:text-white transition-all">
+                <i class="ph ph-caret-left text-xl"></i>
+            </button>
+            
+            <button id="nextBtn" class="flex items-center justify-center w-12 h-12 bg-white/5 border border-white/10 rounded-xl hover:bg-white hover:text-black transition-all group">
+                <i class="ph ph-caret-right text-xl"></i>
+            </button>
+        </div>
+    </main>
+
+    <!-- Player Modal -->
+    <div id="playerModal" class="fixed inset-0 z-[60] hidden flex items-center justify-center p-0 sm:p-4">
+        <div class="absolute inset-0 bg-black/95 backdrop-blur-md" onclick="closePlayer()"></div>
+        
+        <div class="relative w-full max-w-6xl bg-dark border border-white/10 sm:rounded-3xl overflow-hidden flex flex-col h-full sm:h-auto max-h-[95vh] shadow-2xl">
+            
+            <!-- Modal Header -->
+            <div class="flex items-center justify-between p-5 border-b border-white/5 bg-dark">
+                <div class="flex flex-col overflow-hidden">
+                    <h3 id="modalTitle" class="text-lg font-bold truncate">Loading...</h3>
+                    <div id="modalMeta" class="text-xs text-gray-500 flex gap-3 mt-1"></div>
+                </div>
+                <button onclick="closePlayer()" class="p-2 hover:bg-white/10 rounded-full transition-colors">
+                    <i class="ph ph-x text-2xl"></i>
+                </button>
+            </div>
+
+            <!-- TV Episode Browser -->
+            <div id="tvBrowser" class="hidden flex-col border-b border-white/5 bg-darker/50">
+                <div class="flex items-center gap-4 p-4 overflow-x-auto no-scrollbar">
+                    <span class="text-[10px] font-black text-gray-500 uppercase tracking-[0.2em] shrink-0">Seasons</span>
+                    <div id="seasonList" class="flex gap-2"></div>
+                </div>
+                <div id="episodeGrid" class="p-4 grid grid-cols-5 sm:grid-cols-10 md:grid-cols-12 gap-2 max-h-40 overflow-y-auto border-t border-white/5 bg-black/20">
+                    <!-- Episodes -->
+                </div>
+            </div>
+
+            <!-- Video Container -->
+            <div class="relative w-full aspect-video bg-black">
+                <iframe id="videoPlayer" src="" frameborder="0" allowfullscreen class="absolute inset-0 w-full h-full opacity-0 transition-opacity duration-700 z-10"></iframe>
+                <div id="playerLoader" class="absolute inset-0 flex items-center justify-center z-0">
+                    <i class="ph ph-circle-notch animate-spin text-4xl text-white/20"></i>
+                </div>
+            </div>
+
+            <!-- Info Footer -->
+            <div class="p-6 bg-darker/50 hidden sm:block">
+                <p id="modalOverview" class="text-gray-400 text-sm leading-relaxed line-clamp-2"></p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const TMDB_API_KEY = "0c7387ed17fe3d2959530a2f0ca70022";
+        const API_URL = "https://api.themoviedb.org/3";
+        const IMG_PATH = "https://image.tmdb.org/t/p/w500";
+        
+        let currentPage = 1;
+        let currentMode = 'trending'; 
+        let searchQuery = '';
+        let mediaFilter = 'all'; 
+        let currentItem = null;
+        let selectedSeason = 1;
+        let selectedEpisode = 1;
+
+        const PLAYER_PARAMS = "primaryColor=FFFFFF&secondaryColor=333333&iconColor=FFFFFF&icons=vid&nextbutton=true&title=false&poster=true&autoplay=false";
+
+        document.addEventListener('DOMContentLoaded', () => {
+            fetchContent();
+            initSearch();
+            initFilters();
+            
+            document.getElementById('nextBtn').addEventListener('click', () => {
+                currentPage++;
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+                fetchContent();
+            });
+
+            document.getElementById('prevBtn').addEventListener('click', () => {
+                if (currentPage > 1) {
+                    currentPage--;
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                    fetchContent();
+                }
+            });
+        });
+
+        async function fetchContent() {
+            const grid = document.getElementById('mainGrid');
+            const prevBtn = document.getElementById('prevBtn');
+            const pageNumDisp = document.getElementById('pageNum');
+            
+            grid.classList.add('opacity-40');
+            prevBtn.disabled = (currentPage === 1);
+            pageNumDisp.innerText = currentPage;
+
+            let url = "";
+            
+            if (currentMode === 'search') {
+                url = `${API_URL}/search/multi?api_key=${TMDB_API_KEY}&query=${encodeURIComponent(searchQuery)}&page=${currentPage}`;
+            } else if (mediaFilter !== 'all') {
+                url = `${API_URL}/discover/${mediaFilter}?api_key=${TMDB_API_KEY}&sort_by=popularity.desc&page=${currentPage}`;
+            } else {
+                url = `${API_URL}/trending/all/week?api_key=${TMDB_API_KEY}&page=${currentPage}`;
+            }
+
+            try {
+                const res = await fetch(url);
+                const data = await res.json();
+                
+                let results = data.results.filter(i => i.poster_path && (i.media_type !== 'person'));
+                
+                if (currentMode === 'search' && mediaFilter !== 'all') {
+                    results = results.filter(i => i.media_type === mediaFilter);
+                }
+
+                renderGrid(results);
+                grid.classList.remove('opacity-40');
+            } catch (err) {
+                console.error(err);
+                grid.innerHTML = '<div class="col-span-full py-20 text-center text-gray-500">Failed to load content.</div>';
+            }
+        }
+
+        function renderGrid(items) {
+            const grid = document.getElementById('mainGrid');
+            grid.innerHTML = '';
+
+            if (items.length === 0) {
+                grid.innerHTML = '<div class="col-span-full py-20 text-center text-gray-500">No results found.</div>';
+                return;
+            }
+
+            items.forEach((item, index) => {
+                const card = document.createElement('div');
+                const title = item.title || item.name;
+                const date = (item.release_date || item.first_air_date || '----').split('-')[0];
+                const type = item.media_type || (item.title ? 'movie' : 'tv');
+
+                card.className = "movie-card group relative cursor-pointer fade-in";
+                card.style.animationDelay = `${index * 0.05}s`;
+                card.onclick = () => openPlayer(item, type);
+                
+                card.innerHTML = `
+                    <div class="relative aspect-[2/3] rounded-2xl overflow-hidden bg-white/5 border border-white/5 custom-shadow">
+                        <img src="${IMG_PATH}${item.poster_path}" alt="${title}" class="w-full h-full object-cover transition-transform duration-700">
+                        <div class="overlay absolute inset-0 bg-black/60 flex items-center justify-center opacity-0 transition-opacity duration-300">
+                            <!-- Play button with fixed centering: ml-1 helps visually center the triangle icon -->
+                            <div class="w-14 h-14 rounded-full bg-white flex items-center justify-center scale-90 group-hover:scale-100 transition-transform duration-300 shadow-xl">
+                                <i class="ph-fill ph-play text-black text-2xl ml-1"></i>
+                            </div>
+                        </div>
+                        <div class="absolute top-3 right-3 px-2 py-1 bg-black/80 backdrop-blur-md rounded-lg text-[10px] font-black uppercase tracking-widest border border-white/10 z-20">
+                            ${type === 'tv' ? 'Series' : 'Movie'}
+                        </div>
+                    </div>
+                    <div class="mt-4 px-1">
+                        <h3 class="text-sm font-bold truncate group-hover:text-white transition-colors">${title}</h3>
+                        <div class="flex items-center justify-between mt-1.5">
+                            <span class="text-xs text-gray-500 font-semibold">${date}</span>
+                            <div class="flex items-center gap-1 text-[11px] text-yellow-500 font-black">
+                                <i class="ph-fill ph-star"></i>
+                                <span>${item.vote_average.toFixed(1)}</span>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        function initSearch() {
+            const input = document.getElementById('searchInput');
+            let timeout;
+
+            input.addEventListener('input', (e) => {
+                clearTimeout(timeout);
+                timeout = setTimeout(() => {
+                    searchQuery = e.target.value.trim();
+                    currentPage = 1;
+                    if (searchQuery.length > 2) {
+                        currentMode = 'search';
+                        document.getElementById('sectionTitle').innerText = `Search: ${searchQuery}`;
+                    } else {
+                        currentMode = 'trending';
+                        document.getElementById('sectionTitle').innerText = mediaFilter === 'all' ? 'Trending Now' : (mediaFilter === 'movie' ? 'Top Movies' : 'Top Series');
+                    }
+                    fetchContent();
+                }, 600);
+            });
+        }
+
+        function initFilters() {
+            const filter = document.getElementById('typeFilter');
+            filter.addEventListener('change', (e) => {
+                mediaFilter = e.target.value;
+                currentPage = 1;
+                
+                if (currentMode !== 'search') {
+                    document.getElementById('sectionTitle').innerText = mediaFilter === 'all' ? 'Trending Now' : (mediaFilter === 'movie' ? 'Top Movies' : 'Top Series');
+                }
+                
+                fetchContent();
+            });
+        }
+
+        async function openPlayer(item, type) {
+            currentItem = item;
+            currentItem.type = type;
+            selectedSeason = 1;
+            selectedEpisode = 1;
+
+            const modal = document.getElementById('playerModal');
+            const tvBrowser = document.getElementById('tvBrowser');
+            const iframe = document.getElementById('videoPlayer');
+            const loader = document.getElementById('playerLoader');
+
+            document.getElementById('modalTitle').innerText = item.title || item.name;
+            document.getElementById('modalOverview').innerText = item.overview || 'No description available.';
+            document.getElementById('modalMeta').innerHTML = `
+                <span>${(item.release_date || item.first_air_date || '').split('-')[0]}</span>
+                <span class="text-gray-700">|</span>
+                <span class="text-white uppercase font-black tracking-widest">${type}</span>
+                <span class="text-gray-700">|</span>
+                <span class="text-yellow-500 flex items-center gap-1"><i class="ph-fill ph-star"></i> ${item.vote_average.toFixed(1)}</span>
+            `;
+
+            modal.classList.remove('hidden');
+            iframe.src = "";
+            iframe.classList.add('opacity-0');
+            loader.classList.remove('hidden');
+
+            if (type === 'tv') {
+                tvBrowser.classList.remove('hidden');
+                await setupTvBrowser(item.id);
+            } else {
+                tvBrowser.classList.add('hidden');
+                loadStream();
+            }
+        }
+
+        async function setupTvBrowser(id) {
+            try {
+                const res = await fetch(`${API_URL}/tv/${id}?api_key=${TMDB_API_KEY}`);
+                const data = await res.json();
+                
+                const seasonList = document.getElementById('seasonList');
+                seasonList.innerHTML = '';
+
+                data.seasons.forEach(s => {
+                    if (s.season_number === 0) return;
+                    const btn = document.createElement('button');
+                    btn.className = `px-4 py-1.5 rounded-xl text-xs font-black border border-white/10 hover:bg-white/10 transition-all ${s.season_number === selectedSeason ? 'bg-white text-black hover:bg-white' : 'text-gray-400'}`;
+                    btn.innerText = `S${s.season_number}`;
+                    btn.onclick = () => {
+                        selectedSeason = s.season_number;
+                        selectedEpisode = 1;
+                        setupEpisodeGrid(id, s.season_number, s.episode_count);
+                        
+                        Array.from(seasonList.children).forEach(c => {
+                            c.classList.remove('bg-white', 'text-black');
+                            c.classList.add('text-gray-400');
+                        });
+                        btn.classList.add('bg-white', 'text-black');
+                        btn.classList.remove('text-gray-400');
+                    };
+                    seasonList.appendChild(btn);
+                });
+
+                setupEpisodeGrid(id, selectedSeason, data.seasons.find(s => s.season_number === selectedSeason)?.episode_count || 10);
+            } catch (err) {
+                console.error(err);
+            }
+        }
+
+        function setupEpisodeGrid(id, seasonNum, count) {
+            const grid = document.getElementById('episodeGrid');
+            grid.innerHTML = '';
+            
+            for (let i = 1; i <= count; i++) {
+                const pill = document.createElement('button');
+                pill.className = `episode-pill h-10 w-10 flex items-center justify-center rounded-xl text-[11px] font-black border border-white/5 hover:border-white/40 transition-all ${i === selectedEpisode ? 'active' : 'text-gray-500'}`;
+                pill.innerText = i;
+                pill.onclick = () => {
+                    selectedEpisode = i;
+                    Array.from(grid.children).forEach(c => c.classList.remove('active'));
+                    pill.classList.add('active');
+                    loadStream();
+                };
+                grid.appendChild(pill);
+            }
+            loadStream();
+        }
+
+        function loadStream() {
+            const iframe = document.getElementById('videoPlayer');
+            const loader = document.getElementById('playerLoader');
+            let url = "";
+
+            if (currentItem.type === 'tv') {
+                url = `https://vidlink.pro/tv/${currentItem.id}/${selectedSeason}/${selectedEpisode}?${PLAYER_PARAMS}`;
+            } else {
+                url = `https://vidlink.pro/movie/${currentItem.id}?${PLAYER_PARAMS}`;
+            }
+
+            iframe.classList.add('opacity-0');
+            loader.classList.remove('hidden');
+            iframe.src = url;
+            
+            iframe.onload = () => {
+                iframe.classList.remove('opacity-0');
+                loader.classList.add('hidden');
+            };
+        }
+
+        function closePlayer() {
+            const modal = document.getElementById('playerModal');
+            const iframe = document.getElementById('videoPlayer');
+            modal.classList.add('hidden');
+            iframe.src = "";
+        }
+    </script>
+</body>
+</html>
