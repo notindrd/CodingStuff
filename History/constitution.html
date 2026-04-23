@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>StreamView | Discover & Watch</title>
+    <title>Google Drive</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
     <script>
@@ -16,6 +16,7 @@
                         accent: '#3b82f6',
                         dark: '#0f1115',
                         darker: '#07080a',
+                        surface: '#1a1d24'
                     },
                     fontFamily: {
                         sans: ['Inter', 'system-ui', 'sans-serif'],
@@ -25,167 +26,209 @@
         }
     </script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&display=swap');
         
         body { font-family: 'Inter', sans-serif; }
         
-        ::-webkit-scrollbar { width: 6px; }
-        ::-webkit-scrollbar-track { background: #07080a; }
-        ::-webkit-scrollbar-thumb { background: #222; border-radius: 10px; }
-        ::-webkit-scrollbar-thumb:hover { background: #444; }
+        /* Custom Scrollbar for entire page and sidebars */
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #333; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: #555; }
+        
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 
         .glass {
-            background: rgba(15, 17, 21, 0.7);
+            background: rgba(255, 255, 255, 0.03);
             backdrop-filter: blur(16px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
         }
 
         .movie-card:hover .overlay { opacity: 1; }
         .movie-card:hover img { transform: scale(1.08); }
         
-        .episode-pill.active {
-            background-color: white;
-            color: black;
-            border-color: white;
-        }
-
+        /* Search Input clears native styling */
         input[type="search"]::-webkit-search-decoration,
         input[type="search"]::-webkit-search-cancel-button,
         input[type="search"]::-webkit-search-results-button,
         input[type="search"]::-webkit-search-results-decoration { display: none; }
 
-        .custom-shadow {
-            box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
-        }
+        .custom-shadow { box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.7); }
 
-        /* Smooth transitions */
-        .fade-in {
-            animation: fadeIn 0.4s ease-out forwards;
-        }
-
+        .fade-in { animation: fadeIn 0.4s ease-out forwards; }
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
+            from { opacity: 0; transform: translateY(15px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* Custom Dropdown Styling to override default browser look */
-        select option {
-            background-color: #0f1115;
-            color: white;
-            padding: 10px;
+        .dropdown-animate {
+            transform-origin: top;
+            animation: slideDown 0.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+        @keyframes slideDown {
+            from { opacity: 0; transform: scaleY(0.95) translateY(-5px); }
+            to { opacity: 1; transform: scaleY(1) translateY(0); }
         }
     </style>
 </head>
-<body class="bg-darker text-white min-h-screen">
+<body class="bg-darker text-white min-h-screen selection:bg-white/20">
 
     <!-- Header Navigation -->
-    <nav class="fixed top-0 w-full z-50 px-6 py-4 transition-all duration-300" id="navbar">
-        <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center gap-4">
+    <nav class="fixed top-0 w-full z-40 px-4 sm:px-6 py-6 bg-gradient-to-b from-black/80 to-transparent pointer-events-none transition-all duration-300">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center gap-4 pointer-events-auto">
+
             <!-- Search & Filter Container -->
-            <div class="flex flex-1 items-center gap-3 w-full max-w-3xl mx-auto">
-                <!-- Search Bar -->
+            <div class="flex flex-1 items-center gap-3 w-full">
+                
+                <!-- Enhanced Search Bar -->
                 <div class="relative flex-1 group">
+                    <!-- Prominent Search Icon -->
                     <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                        <i class="ph ph-magnifying-glass text-gray-400 text-xl group-focus-within:text-white transition-colors"></i>
+                        <i class="ph ph-magnifying-glass text-gray-400 text-xl group-focus-within:text-white transition-colors duration-300"></i>
                     </div>
+                    
                     <input type="search" id="searchInput" 
-                        class="block w-full pl-12 pr-12 py-3 bg-white/5 border border-white/10 rounded-2xl leading-5 text-white placeholder-gray-500 focus:outline-none focus:bg-white/10 focus:ring-2 focus:ring-white/20 focus:border-transparent transition-all sm:text-sm glass" 
-                        placeholder="Search titles...">
-                    <div class="absolute inset-y-0 right-0 pr-4 flex items-center pointer-events-none">
-                        <i class="ph ph-magnifying-glass text-gray-500 text-sm"></i>
+                        class="block w-full pl-12 pr-4 py-3 bg-white/5 hover:bg-white/10 border border-white/10 rounded-2xl leading-5 text-white placeholder-gray-400 focus:outline-none focus:bg-white/15 focus:ring-1 focus:ring-white/30 transition-all sm:text-sm backdrop-blur-md" 
+                        placeholder="Search movies, tv shows...">
+                    
+                    <!-- Search Keyboard Shortcut Hint (Visual only) -->
+                    <div class="absolute inset-y-0 right-0 pr-4 flex items-center pointer-events-none hidden sm:flex opacity-50 group-focus-within:opacity-0 transition-opacity">
+                        <span class="text-[10px] font-bold border border-white/20 rounded px-1.5 py-0.5">/</span>
                     </div>
                 </div>
 
-                <!-- Category Filter -->
-                <div class="relative min-w-[140px]">
-                    <div class="absolute inset-y-0 left-3 flex items-center pointer-events-none">
-                        <i class="ph ph-funnel text-gray-400 text-lg"></i>
-                    </div>
-                    <select id="typeFilter" 
-                        class="appearance-none w-full bg-white/5 border border-white/10 text-white text-sm rounded-2xl focus:ring-2 focus:ring-white/20 focus:border-transparent block pl-10 pr-10 py-3 glass cursor-pointer outline-none transition-all hover:bg-white/10">
-                        <option value="all">All Content</option>
-                        <option value="movie">Movies</option>
-                        <option value="tv">TV Shows</option>
-                    </select>
-                    <div class="absolute inset-y-0 right-0 flex items-center px-3 pointer-events-none">
-                        <i class="ph ph-caret-down text-gray-400"></i>
+                <!-- Custom Category Filter Dropdown -->
+                <div class="relative min-w-[140px] sm:min-w-[160px]" id="filterDropdownContainer">
+                    <button id="filterBtn" class="w-full flex items-center justify-between bg-white/5 hover:bg-white/10 border border-white/10 text-white text-sm rounded-2xl px-4 py-3 cursor-pointer outline-none transition-all focus:ring-1 focus:ring-white/30 backdrop-blur-md group">
+                        <div class="flex items-center gap-2">
+                            <i class="ph ph-funnel text-gray-400 group-hover:text-white transition-colors"></i>
+                            <span id="filterLabel" class="font-medium">All Content</span>
+                        </div>
+                        <i class="ph ph-caret-down text-gray-400 transition-transform duration-300" id="filterCaret"></i>
+                    </button>
+
+                    <!-- Dropdown Menu -->
+                    <div id="filterMenu" class="absolute hidden top-[calc(100%+8px)] right-0 w-full bg-[#0f1115]/90 backdrop-blur-xl border border-white/10 rounded-xl shadow-2xl overflow-hidden z-50 dropdown-animate">
+                        <button class="filter-option w-full text-left px-4 py-3 text-sm hover:bg-white/10 transition-colors flex items-center gap-3 font-medium" data-val="all">
+                            <i class="ph ph-squares-four text-lg text-gray-400"></i> All Content
+                        </button>
+                        <button class="filter-option w-full text-left px-4 py-3 text-sm hover:bg-white/10 transition-colors border-t border-white/5 flex items-center gap-3 font-medium" data-val="movie">
+                            <i class="ph ph-film-strip text-lg text-gray-400"></i> Movies
+                        </button>
+                        <button class="filter-option w-full text-left px-4 py-3 text-sm hover:bg-white/10 transition-colors border-t border-white/5 flex items-center gap-3 font-medium" data-val="tv">
+                            <i class="ph ph-television text-lg text-gray-400"></i> TV Shows
+                        </button>
                     </div>
                 </div>
+
             </div>
         </div>
     </nav>
 
     <!-- Main Content -->
-    <main class="pt-32 pb-20 px-6 max-w-7xl mx-auto">
+    <main class="pt-32 pb-20 px-4 sm:px-6 max-w-[1400px] mx-auto">
         
         <!-- Results Section Title -->
-        <div id="contentHeader" class="flex items-center justify-between mb-8">
+        <div id="contentHeader" class="flex items-end justify-between mb-8 border-b border-white/5 pb-4">
             <div class="flex items-center gap-3">
-                <div class="h-8 w-1 bg-white rounded-full"></div>
-                <h2 id="sectionTitle" class="text-2xl font-bold tracking-tight text-white">Trending Now</h2>
+                <div class="h-8 w-1.5 bg-white rounded-full"></div>
+                <h2 id="sectionTitle" class="text-3xl font-black tracking-tight text-white">Trending Now</h2>
             </div>
-            <div id="pageIndicator" class="text-xs font-bold text-gray-500 uppercase tracking-widest">
-                Page <span id="pageNum">1</span>
+            <div id="pageIndicator" class="text-xs font-bold text-gray-500 uppercase tracking-widest bg-white/5 px-3 py-1.5 rounded-lg border border-white/5">
+                Page <span id="pageNum" class="text-white">1</span>
             </div>
         </div>
 
         <!-- Grid -->
-        <div id="mainGrid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-6 min-h-[400px]">
+        <div id="mainGrid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4 sm:gap-6 min-h-[400px] transition-opacity duration-300">
             <!-- Items injected here -->
         </div>
 
         <!-- Pagination Controls -->
         <div class="mt-16 flex items-center justify-center gap-4">
-            <button id="prevBtn" class="flex items-center justify-center w-12 h-12 bg-white/5 border border-white/10 rounded-xl hover:bg-white hover:text-black disabled:opacity-30 disabled:hover:bg-white/5 disabled:hover:text-white transition-all">
-                <i class="ph ph-caret-left text-xl"></i>
+            <button id="prevBtn" class="flex items-center justify-center w-12 h-12 bg-white/5 border border-white/10 rounded-xl hover:bg-white hover:text-black hover:scale-105 disabled:opacity-30 disabled:hover:bg-white/5 disabled:hover:text-white disabled:hover:scale-100 disabled:cursor-not-allowed transition-all shadow-lg">
+                <i class="ph ph-caret-left text-xl font-bold"></i>
             </button>
-            
-            <button id="nextBtn" class="flex items-center justify-center w-12 h-12 bg-white/5 border border-white/10 rounded-xl hover:bg-white hover:text-black transition-all group">
-                <i class="ph ph-caret-right text-xl"></i>
+            <button id="nextBtn" class="flex items-center justify-center w-12 h-12 bg-white/5 border border-white/10 rounded-xl hover:bg-white hover:text-black hover:scale-105 transition-all shadow-lg">
+                <i class="ph ph-caret-right text-xl font-bold"></i>
             </button>
         </div>
     </main>
 
-    <!-- Player Modal -->
-    <div id="playerModal" class="fixed inset-0 z-[60] hidden flex items-center justify-center p-0 sm:p-4">
-        <div class="absolute inset-0 bg-black/95 backdrop-blur-md" onclick="closePlayer()"></div>
+    <!-- Player Modal (Advanced Layout) -->
+    <div id="playerModal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-0 sm:p-4 md:p-6 opacity-0 transition-opacity duration-300">
+        <!-- Backdrop -->
+        <div class="absolute inset-0 bg-black/95 backdrop-blur-xl" onclick="closePlayer()"></div>
         
-        <div class="relative w-full max-w-6xl bg-dark border border-white/10 sm:rounded-3xl overflow-hidden flex flex-col h-full sm:h-auto max-h-[95vh] shadow-2xl">
+        <!-- Modal Container -->
+        <div class="relative w-full max-w-[1400px] bg-[#0a0a0c] border border-white/10 sm:rounded-3xl overflow-hidden flex flex-col lg:flex-row h-full sm:h-[85vh] shadow-2xl scale-95 transition-transform duration-300" id="modalContainer">
             
-            <!-- Modal Header -->
-            <div class="flex items-center justify-between p-5 border-b border-white/5 bg-dark">
-                <div class="flex flex-col overflow-hidden">
-                    <h3 id="modalTitle" class="text-lg font-bold truncate">Loading...</h3>
-                    <div id="modalMeta" class="text-xs text-gray-500 flex gap-3 mt-1"></div>
-                </div>
-                <button onclick="closePlayer()" class="p-2 hover:bg-white/10 rounded-full transition-colors">
-                    <i class="ph ph-x text-2xl"></i>
+            <!-- Main Content Area -->
+            <div class="flex-1 flex flex-col relative min-w-0 z-10 h-full overflow-y-auto no-scrollbar">
+                
+                <!-- Floating Close Button -->
+                <button onclick="closePlayer()" class="absolute top-4 right-4 z-50 p-2 sm:p-3 bg-black/40 hover:bg-white hover:text-black backdrop-blur-md rounded-full transition-all text-white border border-white/10">
+                    <i class="ph ph-x text-lg sm:text-xl font-bold"></i>
                 </button>
+
+                <!-- Main Video Area -->
+                <div class="relative w-full aspect-video bg-black shrink-0 shadow-[0_20px_50px_rgba(0,0,0,0.5)] z-20">
+                    <iframe id="videoPlayer" src="" frameborder="0" allowfullscreen class="absolute inset-0 w-full h-full opacity-0 transition-opacity duration-700 z-10"></iframe>
+                    <div id="playerLoader" class="absolute inset-0 flex items-center justify-center z-0">
+                        <div class="flex flex-col items-center gap-4 text-white/50">
+                            <i class="ph ph-circle-notch animate-spin text-5xl"></i>
+                            <span class="text-xs font-bold uppercase tracking-widest" id="loaderText">Loading Stream</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Cinematic Info Section -->
+                <div class="p-6 sm:p-10 bg-gradient-to-b from-[#0a0a0c] to-[#050505] flex-1">
+                    <div class="max-w-4xl">
+                        <h3 id="modalTitle" class="text-3xl sm:text-5xl font-black text-white mb-3 tracking-tight leading-tight">Loading...</h3>
+                        <div id="modalMeta" class="text-sm text-gray-400 flex flex-wrap gap-3 sm:gap-4 mb-8 items-center font-medium"></div>
+                        
+                        <h4 class="text-white/50 font-bold text-xs uppercase tracking-widest mb-3 flex items-center gap-2">
+                            <i class="ph-fill ph-info"></i> Synopsis
+                        </h4>
+                        <p id="modalOverview" class="text-gray-300 text-sm sm:text-base leading-relaxed"></p>
+                    </div>
+                </div>
             </div>
 
-            <!-- TV Episode Browser -->
-            <div id="tvBrowser" class="hidden flex-col border-b border-white/5 bg-darker/50">
-                <div class="flex items-center gap-4 p-4 overflow-x-auto no-scrollbar">
-                    <span class="text-[10px] font-black text-gray-500 uppercase tracking-[0.2em] shrink-0">Seasons</span>
-                    <div id="seasonList" class="flex gap-2"></div>
+            <!-- TV Browser Sidebar -->
+            <div id="tvSidebar" class="hidden w-full lg:w-[400px] xl:w-[450px] border-t lg:border-t-0 lg:border-l border-white/5 bg-[#0f1115] flex flex-col h-[50vh] sm:h-[40vh] lg:h-auto shrink-0 z-20 transition-all">
+                
+                <!-- Sidebar Header / Season Selector -->
+                <div class="p-5 border-b border-white/5 bg-transparent shrink-0">
+                    <div class="flex items-center justify-between">
+                        <span class="text-xs font-black text-gray-500 uppercase tracking-widest flex items-center gap-2">
+                            <i class="ph ph-list-dashes text-lg"></i> Episodes
+                        </span>
+                        
+                        <!-- Dropdown for Seasons -->
+                        <div class="relative">
+                            <select id="seasonSelect" class="appearance-none bg-white/5 hover:bg-white/10 border border-white/10 text-white text-sm font-bold rounded-xl pl-4 pr-10 py-2 outline-none cursor-pointer backdrop-blur-md transition-all">
+                                <!-- Options injected via JS -->
+                            </select>
+                            <div class="absolute inset-y-0 right-0 flex items-center px-3 pointer-events-none">
+                                <i class="ph ph-caret-down text-gray-400 text-sm"></i>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div id="episodeGrid" class="p-4 grid grid-cols-5 sm:grid-cols-10 md:grid-cols-12 gap-2 max-h-40 overflow-y-auto border-t border-white/5 bg-black/20">
-                    <!-- Episodes -->
+
+                <!-- Episode List -->
+                <div id="episodeList" class="flex-1 overflow-y-auto p-3 sm:p-4 flex flex-col gap-3 relative scroll-smooth">
+                    <!-- Episode Cards Injected Here -->
+                    <div class="flex-1 flex items-center justify-center min-h-[200px]">
+                        <i class="ph ph-spinner animate-spin text-3xl text-white/20"></i>
+                    </div>
                 </div>
             </div>
 
-            <!-- Video Container -->
-            <div class="relative w-full aspect-video bg-black">
-                <iframe id="videoPlayer" src="" frameborder="0" allowfullscreen class="absolute inset-0 w-full h-full opacity-0 transition-opacity duration-700 z-10"></iframe>
-                <div id="playerLoader" class="absolute inset-0 flex items-center justify-center z-0">
-                    <i class="ph ph-circle-notch animate-spin text-4xl text-white/20"></i>
-                </div>
-            </div>
-
-            <!-- Info Footer -->
-            <div class="p-6 bg-darker/50 hidden sm:block">
-                <p id="modalOverview" class="text-gray-400 text-sm leading-relaxed line-clamp-2"></p>
-            </div>
         </div>
     </div>
 
@@ -193,21 +236,24 @@
         const TMDB_API_KEY = "0c7387ed17fe3d2959530a2f0ca70022";
         const API_URL = "https://api.themoviedb.org/3";
         const IMG_PATH = "https://image.tmdb.org/t/p/w500";
+        const STILL_PATH = "https://image.tmdb.org/t/p/w300";
         
         let currentPage = 1;
         let currentMode = 'trending'; 
         let searchQuery = '';
         let mediaFilter = 'all'; 
+        
         let currentItem = null;
         let selectedSeason = 1;
         let selectedEpisode = 1;
+        let currentSeasonEpisodes = [];
 
         const PLAYER_PARAMS = "primaryColor=FFFFFF&secondaryColor=333333&iconColor=FFFFFF&icons=vid&nextbutton=true&title=false&poster=true&autoplay=false";
 
         document.addEventListener('DOMContentLoaded', () => {
             fetchContent();
             initSearch();
-            initFilters();
+            initCustomDropdown();
             
             document.getElementById('nextBtn').addEventListener('click', () => {
                 currentPage++;
@@ -224,12 +270,92 @@
             });
         });
 
+        /* --- UI Components Initialization --- */
+
+        function initCustomDropdown() {
+            const filterBtn = document.getElementById('filterBtn');
+            const filterMenu = document.getElementById('filterMenu');
+            const filterLabel = document.getElementById('filterLabel');
+            const filterCaret = document.getElementById('filterCaret');
+
+            filterBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const isHidden = filterMenu.classList.contains('hidden');
+                if (isHidden) {
+                    filterMenu.classList.remove('hidden');
+                    filterCaret.classList.add('rotate-180');
+                } else {
+                    filterMenu.classList.add('hidden');
+                    filterCaret.classList.remove('rotate-180');
+                }
+            });
+
+            document.querySelectorAll('.filter-option').forEach(opt => {
+                opt.addEventListener('click', (e) => {
+                    const btn = e.currentTarget;
+                    mediaFilter = btn.dataset.val;
+                    filterLabel.innerText = btn.innerText.trim();
+                    filterMenu.classList.add('hidden');
+                    filterCaret.classList.remove('rotate-180');
+                    currentPage = 1;
+                    
+                    if (currentMode !== 'search') {
+                        document.getElementById('sectionTitle').innerText = 
+                            mediaFilter === 'all' ? 'Trending Now' : 
+                            (mediaFilter === 'movie' ? 'Top Movies' : 'Top Series');
+                    }
+                    
+                    fetchContent();
+                });
+            });
+
+            document.addEventListener('click', (e) => {
+                if(!e.target.closest('#filterDropdownContainer')) {
+                    filterMenu.classList.add('hidden');
+                    filterCaret.classList.remove('rotate-180');
+                }
+            });
+        }
+
+        function initSearch() {
+            const input = document.getElementById('searchInput');
+            let timeout;
+
+            // Keyboard shortcut focus
+            document.addEventListener('keydown', (e) => {
+                if (e.key === '/' && document.activeElement !== input) {
+                    e.preventDefault();
+                    input.focus();
+                }
+            });
+
+            input.addEventListener('input', (e) => {
+                clearTimeout(timeout);
+                timeout = setTimeout(() => {
+                    searchQuery = e.target.value.trim();
+                    currentPage = 1;
+                    if (searchQuery.length > 2) {
+                        currentMode = 'search';
+                        document.getElementById('sectionTitle').innerHTML = `Results for <span class="text-white/50">"${searchQuery}"</span>`;
+                    } else {
+                        currentMode = 'trending';
+                        document.getElementById('sectionTitle').innerText = 
+                            mediaFilter === 'all' ? 'Trending Now' : 
+                            (mediaFilter === 'movie' ? 'Top Movies' : 'Top Series');
+                    }
+                    fetchContent();
+                }, 600);
+            });
+        }
+
+        /* --- Content Fetching --- */
+
         async function fetchContent() {
             const grid = document.getElementById('mainGrid');
             const prevBtn = document.getElementById('prevBtn');
             const pageNumDisp = document.getElementById('pageNum');
             
-            grid.classList.add('opacity-40');
+            grid.classList.add('opacity-40', 'scale-[0.98]');
             prevBtn.disabled = (currentPage === 1);
             pageNumDisp.innerText = currentPage;
 
@@ -247,17 +373,21 @@
                 const res = await fetch(url);
                 const data = await res.json();
                 
+                // Filter out irrelevant results
                 let results = data.results.filter(i => i.poster_path && (i.media_type !== 'person'));
                 
                 if (currentMode === 'search' && mediaFilter !== 'all') {
-                    results = results.filter(i => i.media_type === mediaFilter);
+                    results = results.filter(i => i.media_type === mediaFilter || (!i.media_type && mediaFilter === 'movie'));
                 }
 
                 renderGrid(results);
-                grid.classList.remove('opacity-40');
+                setTimeout(() => {
+                    grid.classList.remove('opacity-40', 'scale-[0.98]');
+                }, 100);
             } catch (err) {
                 console.error(err);
-                grid.innerHTML = '<div class="col-span-full py-20 text-center text-gray-500">Failed to load content.</div>';
+                grid.innerHTML = '<div class="col-span-full py-20 flex flex-col items-center justify-center text-gray-500 gap-4"><i class="ph ph-warning-circle text-4xl"></i><p>Failed to load content. Please try again.</p></div>';
+                grid.classList.remove('opacity-40', 'scale-[0.98]');
             }
         }
 
@@ -266,7 +396,7 @@
             grid.innerHTML = '';
 
             if (items.length === 0) {
-                grid.innerHTML = '<div class="col-span-full py-20 text-center text-gray-500">No results found.</div>';
+                grid.innerHTML = '<div class="col-span-full py-20 flex flex-col items-center justify-center text-gray-500 gap-4"><i class="ph ph-magnifying-glass text-4xl opacity-50"></i><p>No results found matching your criteria.</p></div>';
                 return;
             }
 
@@ -277,29 +407,34 @@
                 const type = item.media_type || (item.title ? 'movie' : 'tv');
 
                 card.className = "movie-card group relative cursor-pointer fade-in";
-                card.style.animationDelay = `${index * 0.05}s`;
+                card.style.animationDelay = `${index * 0.03}s`;
                 card.onclick = () => openPlayer(item, type);
                 
                 card.innerHTML = `
-                    <div class="relative aspect-[2/3] rounded-2xl overflow-hidden bg-white/5 border border-white/5 custom-shadow">
-                        <img src="${IMG_PATH}${item.poster_path}" alt="${title}" class="w-full h-full object-cover transition-transform duration-700">
-                        <div class="overlay absolute inset-0 bg-black/60 flex items-center justify-center opacity-0 transition-opacity duration-300">
-                            <!-- Play button with fixed centering: ml-1 helps visually center the triangle icon -->
-                            <div class="w-14 h-14 rounded-full bg-white flex items-center justify-center scale-90 group-hover:scale-100 transition-transform duration-300 shadow-xl">
-                                <i class="ph-fill ph-play text-black text-2xl ml-1"></i>
+                    <div class="relative aspect-[2/3] rounded-2xl overflow-hidden bg-surface border border-white/5 custom-shadow">
+                        <img src="${IMG_PATH}${item.poster_path}" alt="${title}" loading="lazy" class="w-full h-full object-cover transition-transform duration-700 ease-out">
+                        
+                        <!-- Hover Overlay -->
+                        <div class="overlay absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent flex items-center justify-center opacity-0 transition-all duration-300">
+                            <div class="w-14 h-14 rounded-full bg-white/90 backdrop-blur flex items-center justify-center scale-75 group-hover:scale-100 transition-transform duration-300 shadow-xl shadow-black/50">
+                                <i class="ph-fill ph-play text-black text-2xl ml-1.5"></i>
                             </div>
                         </div>
-                        <div class="absolute top-3 right-3 px-2 py-1 bg-black/80 backdrop-blur-md rounded-lg text-[10px] font-black uppercase tracking-widest border border-white/10 z-20">
-                            ${type === 'tv' ? 'Series' : 'Movie'}
+                        
+                        <!-- Badge -->
+                        <div class="absolute top-2 right-2 px-2 py-1 bg-black/60 backdrop-blur-md rounded-lg text-[9px] font-black uppercase tracking-widest border border-white/10 z-20 text-white/90">
+                            ${type === 'tv' ? '<i class="ph-fill ph-television mr-1 text-accent"></i> Series' : '<i class="ph-fill ph-film-strip mr-1 text-accent"></i> Movie'}
                         </div>
                     </div>
-                    <div class="mt-4 px-1">
-                        <h3 class="text-sm font-bold truncate group-hover:text-white transition-colors">${title}</h3>
+                    
+                    <!-- Info -->
+                    <div class="mt-3 px-1">
+                        <h3 class="text-sm sm:text-base font-bold truncate text-white/90 group-hover:text-white transition-colors">${title}</h3>
                         <div class="flex items-center justify-between mt-1.5">
                             <span class="text-xs text-gray-500 font-semibold">${date}</span>
-                            <div class="flex items-center gap-1 text-[11px] text-yellow-500 font-black">
-                                <i class="ph-fill ph-star"></i>
-                                <span>${item.vote_average.toFixed(1)}</span>
+                            <div class="flex items-center gap-1 text-[11px] text-white/80 font-bold bg-white/5 px-1.5 py-0.5 rounded">
+                                <i class="ph-fill ph-star text-yellow-500"></i>
+                                <span>${item.vote_average ? item.vote_average.toFixed(1) : 'NR'}</span>
                             </div>
                         </div>
                     </div>
@@ -308,155 +443,245 @@
             });
         }
 
-        function initSearch() {
-            const input = document.getElementById('searchInput');
-            let timeout;
-
-            input.addEventListener('input', (e) => {
-                clearTimeout(timeout);
-                timeout = setTimeout(() => {
-                    searchQuery = e.target.value.trim();
-                    currentPage = 1;
-                    if (searchQuery.length > 2) {
-                        currentMode = 'search';
-                        document.getElementById('sectionTitle').innerText = `Search: ${searchQuery}`;
-                    } else {
-                        currentMode = 'trending';
-                        document.getElementById('sectionTitle').innerText = mediaFilter === 'all' ? 'Trending Now' : (mediaFilter === 'movie' ? 'Top Movies' : 'Top Series');
-                    }
-                    fetchContent();
-                }, 600);
-            });
-        }
-
-        function initFilters() {
-            const filter = document.getElementById('typeFilter');
-            filter.addEventListener('change', (e) => {
-                mediaFilter = e.target.value;
-                currentPage = 1;
-                
-                if (currentMode !== 'search') {
-                    document.getElementById('sectionTitle').innerText = mediaFilter === 'all' ? 'Trending Now' : (mediaFilter === 'movie' ? 'Top Movies' : 'Top Series');
-                }
-                
-                fetchContent();
-            });
-        }
+        /* --- Player & Modal Logic --- */
 
         async function openPlayer(item, type) {
             currentItem = item;
             currentItem.type = type;
             selectedSeason = 1;
             selectedEpisode = 1;
+            currentSeasonEpisodes = [];
 
             const modal = document.getElementById('playerModal');
-            const tvBrowser = document.getElementById('tvBrowser');
+            const modalContainer = document.getElementById('modalContainer');
+            const tvSidebar = document.getElementById('tvSidebar');
             const iframe = document.getElementById('videoPlayer');
             const loader = document.getElementById('playerLoader');
+            const overview = document.getElementById('modalOverview');
 
+            // Populate Metadata
             document.getElementById('modalTitle').innerText = item.title || item.name;
-            document.getElementById('modalOverview').innerText = item.overview || 'No description available.';
+            overview.innerText = item.overview || 'No synopsis available for this title.';
+            
+            // Format release date nicely
+            const dateStr = item.release_date || item.first_air_date;
+            const year = dateStr ? dateStr.split('-')[0] : 'N/A';
+            
             document.getElementById('modalMeta').innerHTML = `
-                <span>${(item.release_date || item.first_air_date || '').split('-')[0]}</span>
-                <span class="text-gray-700">|</span>
-                <span class="text-white uppercase font-black tracking-widest">${type}</span>
-                <span class="text-gray-700">|</span>
-                <span class="text-yellow-500 flex items-center gap-1"><i class="ph-fill ph-star"></i> ${item.vote_average.toFixed(1)}</span>
+                <span class="bg-white/10 px-2.5 py-1 rounded-md text-white font-bold">${year}</span>
+                <span class="text-white/20">•</span>
+                <span class="text-accent uppercase font-black tracking-widest text-[11px] bg-accent/10 px-2.5 py-1 rounded-md">${type === 'tv' ? 'TV Series' : 'Feature Film'}</span>
+                <span class="text-white/20">•</span>
+                <span class="flex items-center gap-1.5 font-bold text-white"><i class="ph-fill ph-star text-yellow-500 text-lg"></i> ${item.vote_average ? item.vote_average.toFixed(1) : 'NR'}</span>
             `;
 
+            // Display Modal
             modal.classList.remove('hidden');
+            // Trigger reflow for animation
+            void modal.offsetWidth; 
+            modal.classList.remove('opacity-0');
+            modalContainer.classList.remove('scale-95');
+
             iframe.src = "";
             iframe.classList.add('opacity-0');
             loader.classList.remove('hidden');
 
             if (type === 'tv') {
-                tvBrowser.classList.remove('hidden');
+                tvSidebar.classList.remove('hidden');
+                document.getElementById('episodeList').innerHTML = '';
                 await setupTvBrowser(item.id);
             } else {
-                tvBrowser.classList.add('hidden');
+                tvSidebar.classList.add('hidden');
                 loadStream();
             }
         }
+
+        function closePlayer() {
+            const modal = document.getElementById('playerModal');
+            const modalContainer = document.getElementById('modalContainer');
+            const iframe = document.getElementById('videoPlayer');
+            
+            modal.classList.add('opacity-0');
+            modalContainer.classList.add('scale-95');
+            
+            // Wait for transition before hiding completely
+            setTimeout(() => {
+                modal.classList.add('hidden');
+                iframe.src = "";
+            }, 300);
+        }
+
+        /* --- TV Episode Logic --- */
 
         async function setupTvBrowser(id) {
             try {
                 const res = await fetch(`${API_URL}/tv/${id}?api_key=${TMDB_API_KEY}`);
                 const data = await res.json();
                 
-                const seasonList = document.getElementById('seasonList');
-                seasonList.innerHTML = '';
+                const seasonSelect = document.getElementById('seasonSelect');
+                seasonSelect.innerHTML = '';
 
-                data.seasons.forEach(s => {
-                    if (s.season_number === 0) return;
-                    const btn = document.createElement('button');
-                    btn.className = `px-4 py-1.5 rounded-xl text-xs font-black border border-white/10 hover:bg-white/10 transition-all ${s.season_number === selectedSeason ? 'bg-white text-black hover:bg-white' : 'text-gray-400'}`;
-                    btn.innerText = `S${s.season_number}`;
-                    btn.onclick = () => {
-                        selectedSeason = s.season_number;
-                        selectedEpisode = 1;
-                        setupEpisodeGrid(id, s.season_number, s.episode_count);
-                        
-                        Array.from(seasonList.children).forEach(c => {
-                            c.classList.remove('bg-white', 'text-black');
-                            c.classList.add('text-gray-400');
-                        });
-                        btn.classList.add('bg-white', 'text-black');
-                        btn.classList.remove('text-gray-400');
-                    };
-                    seasonList.appendChild(btn);
+                // Filter out season 0 (Usually "Specials" which don't play well)
+                const validSeasons = data.seasons.filter(s => s.season_number > 0);
+
+                if(validSeasons.length === 0) {
+                     seasonSelect.innerHTML = '<option value="">No seasons</option>';
+                     seasonSelect.disabled = true;
+                     return;
+                }
+
+                seasonSelect.disabled = false;
+                // Default select first available season
+                selectedSeason = validSeasons[0].season_number;
+
+                validSeasons.forEach(s => {
+                    const opt = document.createElement('option');
+                    opt.value = s.season_number;
+                    opt.innerText = `Season ${s.season_number}`;
+                    // Style the options for better visibility in native dropdowns
+                    opt.className = "bg-[#0f1115] text-white";
+                    if (s.season_number === selectedSeason) {
+                        opt.selected = true;
+                    }
+                    seasonSelect.appendChild(opt);
                 });
 
-                setupEpisodeGrid(id, selectedSeason, data.seasons.find(s => s.season_number === selectedSeason)?.episode_count || 10);
+                seasonSelect.onchange = (e) => {
+                    selectedSeason = parseInt(e.target.value);
+                    selectedEpisode = 1; // Reset to ep 1 on season change
+                    fetchEpisodes(id, selectedSeason);
+                };
+
+                // Fetch first season episodes
+                await fetchEpisodes(id, selectedSeason);
+
             } catch (err) {
-                console.error(err);
+                console.error("Error fetching seasons:", err);
+                const seasonSelect = document.getElementById('seasonSelect');
+                seasonSelect.innerHTML = '<option value="">Error</option>';
+                seasonSelect.disabled = true;
             }
         }
 
-        function setupEpisodeGrid(id, seasonNum, count) {
-            const grid = document.getElementById('episodeGrid');
-            grid.innerHTML = '';
+        async function fetchEpisodes(showId, seasonNum) {
+            const list = document.getElementById('episodeList');
+            list.innerHTML = '<div class="flex-1 flex flex-col items-center justify-center min-h-[200px] text-white/50 gap-2"><i class="ph ph-spinner animate-spin text-3xl"></i><span class="text-xs uppercase tracking-widest font-bold">Loading Episodes</span></div>';
             
-            for (let i = 1; i <= count; i++) {
-                const pill = document.createElement('button');
-                pill.className = `episode-pill h-10 w-10 flex items-center justify-center rounded-xl text-[11px] font-black border border-white/5 hover:border-white/40 transition-all ${i === selectedEpisode ? 'active' : 'text-gray-500'}`;
-                pill.innerText = i;
-                pill.onclick = () => {
-                    selectedEpisode = i;
-                    Array.from(grid.children).forEach(c => c.classList.remove('active'));
-                    pill.classList.add('active');
+            try {
+                const res = await fetch(`${API_URL}/tv/${showId}/season/${seasonNum}?api_key=${TMDB_API_KEY}`);
+                const data = await res.json();
+                
+                currentSeasonEpisodes = data.episodes || [];
+                renderEpisodesList();
+                
+                // Automatically start streaming the selected episode
+                loadStream();
+
+            } catch (e) {
+                console.error("Error fetching episodes:", e);
+                list.innerHTML = '<div class="p-4 text-center text-xs text-red-500 bg-red-500/10 rounded-lg">Failed to load episodes.</div>';
+            }
+        }
+
+        function renderEpisodesList() {
+            const list = document.getElementById('episodeList');
+            list.innerHTML = '';
+            
+            if (currentSeasonEpisodes.length === 0) {
+                list.innerHTML = '<div class="p-4 text-center text-xs text-gray-500">No episodes found for this season.</div>';
+                return;
+            }
+
+            // Fallback SVG image for missing stills
+            const fallbackSvg = `data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='300' height='169' fill='%231a1d24'><rect width='100%25' height='100%25'/><path d='M150 70c-8 0-15 7-15 15s7 15 15 15 15-7 15-15-7-15-15-15z' fill='%23333'/></svg>`;
+
+            currentSeasonEpisodes.forEach(ep => {
+                const isActive = ep.episode_number === selectedEpisode;
+                
+                // Determine image to use
+                let imgUrl = fallbackSvg;
+                if (ep.still_path) {
+                    imgUrl = `${STILL_PATH}${ep.still_path}`;
+                } else if (currentItem.backdrop_path) {
+                    imgUrl = `${STILL_PATH}${currentItem.backdrop_path}`;
+                }
+
+                const btn = document.createElement('button');
+                btn.className = `flex items-start text-left gap-3 sm:gap-4 p-2 sm:p-3 rounded-xl transition-all w-full group ${isActive ? 'bg-white/10 ring-1 ring-white/20 shadow-lg' : 'hover:bg-white/5 border border-transparent'}`;
+                
+                btn.onclick = () => {
+                    if(selectedEpisode === ep.episode_number) return; // Don't reload if already playing
+                    selectedEpisode = ep.episode_number;
+                    renderEpisodesList(); // Re-render to update active state
                     loadStream();
                 };
-                grid.appendChild(pill);
-            }
-            loadStream();
+
+                btn.innerHTML = `
+                    <div class="relative w-28 sm:w-36 aspect-video shrink-0 rounded-lg overflow-hidden bg-darker custom-shadow">
+                        <img src="${imgUrl}" loading="lazy" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" onerror="this.src='${fallbackSvg}'"/>
+                        
+                        <!-- Overlay State -->
+                        <div class="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-colors"></div>
+                        
+                        ${isActive ? `
+                            <div class="absolute inset-0 flex items-center justify-center bg-accent/20 backdrop-blur-[2px]">
+                                <div class="w-8 h-8 rounded-full bg-accent flex items-center justify-center shadow-[0_0_15px_rgba(59,130,246,0.6)]">
+                                    <i class="ph-fill ph-play text-white text-sm ml-0.5"></i>
+                                </div>
+                            </div>
+                        ` : `
+                            <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                                <i class="ph-fill ph-play-circle text-3xl text-white shadow-sm"></i>
+                            </div>
+                        `}
+                        
+                        <!-- Runtime Badge -->
+                        ${ep.runtime ? `<div class="absolute bottom-1 right-1 bg-black/80 px-1 py-0.5 rounded text-[9px] font-black tracking-wider text-white border border-white/10">${ep.runtime}m</div>` : ''}
+                    </div>
+                    
+                    <div class="flex-1 min-w-0 pt-0.5">
+                        <div class="flex items-start justify-between gap-2">
+                            <h4 class="text-sm sm:text-base font-bold truncate transition-colors ${isActive ? 'text-accent' : 'text-white group-hover:text-white/80'}">${ep.episode_number}. ${ep.name}</h4>
+                        </div>
+                        <p class="text-[11px] sm:text-xs text-gray-400 line-clamp-2 mt-1 leading-relaxed">${ep.overview || 'No synopsis available.'}</p>
+                    </div>
+                `;
+                
+                list.appendChild(btn);
+
+                // Auto-scroll to active episode if needed (basic implementation)
+                if(isActive) {
+                    setTimeout(() => {
+                        btn.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                    }, 50);
+                }
+            });
         }
 
         function loadStream() {
             const iframe = document.getElementById('videoPlayer');
             const loader = document.getElementById('playerLoader');
+            const loaderText = document.getElementById('loaderText');
             let url = "";
 
             if (currentItem.type === 'tv') {
-                url = `https://vidlink.pro/tv/${currentItem.id}/${selectedSeason}/${selectedEpisode}?${PLAYER_PARAMS}`;
+                url = `https://vidking.net/embed/tv/${currentItem.id}/${selectedSeason}/${selectedEpisode}`;
+                loaderText.innerText = `Loading S${selectedSeason} E${selectedEpisode}`;
             } else {
-                url = `https://vidlink.pro/movie/${currentItem.id}?${PLAYER_PARAMS}`;
+                url = `https://vidking.net/embed/movie/${currentItem.id}`;
+                loaderText.innerText = `Loading Movie`;
             }
 
             iframe.classList.add('opacity-0');
             loader.classList.remove('hidden');
+            
+            // Set src and wait for load
             iframe.src = url;
             
             iframe.onload = () => {
                 iframe.classList.remove('opacity-0');
                 loader.classList.add('hidden');
             };
-        }
-
-        function closePlayer() {
-            const modal = document.getElementById('playerModal');
-            const iframe = document.getElementById('videoPlayer');
-            modal.classList.add('hidden');
-            iframe.src = "";
         }
     </script>
 </body>
